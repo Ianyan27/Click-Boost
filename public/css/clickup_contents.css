@@ -1,0 +1,97 @@
+.clickup-container {
+    margin: 20px 20px 0 20px;
+    height: calc(100vh - 80px);
+}
+
+/* .task-container .task-table-container {
+    width: 100%;
+    height: clamp(250px, 300px, calc(100% - 350px));
+} */
+
+.clickup-table-container {
+    width: 100%;
+}
+
+.clickup-table-container table {
+    width: inherit;
+    border-radius: 6px;
+    border-collapse: collapse;
+}
+
+.clickup-table-container table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.clickup-table-container table tbody {
+    overflow-y: auto;
+    max-height: calc(100vh - 160px);
+}
+
+.clickup-table-container table thead tr th {
+    height: 40px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 6px;
+    background-color: black;
+    color: white;
+}
+
+.clickup-table-container table tbody tr td {
+    height: 35px;
+    border-bottom: 1px solid black;
+    font-size: 16px;
+    font-weight: 500;
+    padding-left: 10px;
+}
+
+.clickup-table-container thead,
+.clickup-table-container tbody,
+.clickup-table-container tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.button-section-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+}
+
+.button-section-container .screen-title {
+    font-size: 2em;
+}
+
+.button-section-container div:nth-child(2){
+    height: 30px;
+}
+
+.button-section-container div button {
+    height: inherit;
+    width: 150px;
+    border: 1px solid black;
+    border-radius: 6px;
+}
+
+.action-column {
+    vertical-align: middle; 
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.action-buttons button {
+    min-height: 20px;
+    height: 20px;
+    max-height: 30px;
+    min-width: 60px;
+    width: 60px;
+    max-width: 70px;
+}

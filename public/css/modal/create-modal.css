@@ -1,0 +1,80 @@
+.create-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 400px;
+    background-color: #e5e5e5;
+    border: 1px solid black;
+    border-radius: 6px;
+}
+
+.space,
+.folder {
+    min-height: 165px;
+}
+
+.list{
+    min-height: 225px;
+}
+
+.task {
+    min-height: 255px;
+}
+
+.create-modal .modal-header .button-section{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    height: 30px;
+    margin: 10px;
+}
+
+.create-modal .modal-header .title-section {
+    position: absolute;
+    top: 10px;
+    height: 30px;
+    width: 100%;
+    text-align: center;
+    align-content: center;
+    z-index: -1;
+}
+
+.create-dropdown-container,
+.create-name-container,
+.create-description-container,
+.create-due-date-container{
+    height: 30px;
+    padding: 5px 10px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 125px 1fr;
+}
+
+.create-task-dropdown-container,
+.create-task-name-container,
+.create-task-description-container,
+.create-task-due-date-container,
+.create-task-status-container {
+    height: 30px;
+    padding: 5px 10px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 160px 1fr;
+}
+
+.submit-btn-ctn {
+    margin-top: 10px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.submit-btn-ctn button {
+    height: inherit;
+    width: 115px;
+    border: 1px solid black;
+    border-radius: 6px;
+}

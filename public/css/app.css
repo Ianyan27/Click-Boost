@@ -1,0 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    color: black;
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    height: 60px;
+}
+
+.header .logo-name,
+.header .user-account {
+    width: 50%;
+    height: 60px;
+}
+
+.header .logo-name {
+    display: flex;
+    align-items: center;
+    padding-left: 35px;
+}
+
+.logo-name .app-name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header .user-account {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 35px;
+}
+
+.header .user-account i:nth-child(1),
+.header .user-account .user-name,
+.header .user-account button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header .user-account .fa-user {
+    width: 20px;
+    height: 25px;
+    margin-right: 5px;
+}
+
+.header .user-account .dropdown-button {
+    border: none;
+    color: black;
+    background-color: white;
+    font-weight: 600;
+    width: 25px;
+    height: 25px;
+    padding-top: 3px;
+}
+
+.user-account .user-name{
+    font-size: 18px;
+    font-weight: normal;
+    height: 25px;
+}
+
+.user-account .dropdown-button i {
+    width: inherit;
+    height: inherit;
+}
+
+.main-content {
+    display: flex;
+}
+
+.sidebar {
+    width: 225px;
+    /* min-height: calc(100vh - 61px); */
+    max-height: calc(100vh - 61px);
+    background-color: #ccc;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    border-right: 1px solid black;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    min-height: 40px;
+}
+
+.sidebar ul:first-child {
+    grid-row: 1;
+}
+
+.sidebar ul:last-child {
+    height: auto;
+    grid-row: 3;
+}
+
+.sidebar ul li {
+    height: 40px;
+    align-content: center;
+    text-align: start;
+    background-color: white;
+    padding-left: 35px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: black;
+}
+
+.sidebar ul li a i {
+    margin-right: 5px;
+}
+
+.sidebar .logout-btn {
+    background-color: white;
+    color: black;
+    border: none;
+}
+
+.content {
+    width: calc(100% - 225px);
+    min-height: calc(100vh - 61px);
+}
