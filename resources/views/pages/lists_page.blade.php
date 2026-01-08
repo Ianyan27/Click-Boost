@@ -18,27 +18,26 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan="10">Lists</th>
+                        <th colspan="7">Lists</th>
+                        <th colspan="3">Folder</th>
                         <th colspan="2">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($lists as $list)
                         <tr>
-                            <td colspan="10">{{ $list->name}}</td>
+                            <td colspan="7">{{ $list->name}}</td>
+                            <td colspan="3">{{ $list->folder_name }}</td>
                             <td class="action-column" colspan="2">
                                 <div class="action-buttons">
                                     <button>
                                         <i class="fa-solid fa-eye"></i>
-                                        <span>View</span>
                                     </button>
                                     <button>
                                         <i class="fa-solid fa-pencil"></i>
-                                        <span>Edit</span>
                                     </button>
                                     <button>
                                         <i class="fa-solid fa-trash"></i>
-                                        <span>Delete</span>
                                     </button>
                                 </div>
                             </td>

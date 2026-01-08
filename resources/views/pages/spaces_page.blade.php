@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @extends('layouts.modal.space-modal')
+@extends('layouts.modal.view-data-modal.view-space-modal')
 
 @section('content')
 <div class="clickup-container">

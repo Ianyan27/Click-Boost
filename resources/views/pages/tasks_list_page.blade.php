@@ -19,7 +19,8 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan="8">Task Name</th>
+                        <th colspan="5">Task Name</th>
+                        <th colspan="3">Lists Name</th>
                         <th colspan="2">Status</th>
                         <th colspan="2">Actions</th>
                     </tr>
@@ -27,7 +28,8 @@
                 <tbody>
                     @foreach ($tasks as $task)
                         <tr>
-                            <td colspan="8">{{ $task->name }}</td>
+                            <td colspan="5">{{ $task->name }}</td>
+                            <td colspan="3">{{ $task->list_name }}</td>
                             <td colspan="2">{{ $task->status }}</td>
                             <td class="action-column" colspan="2">
                                 <div class="action-buttons">
@@ -79,10 +81,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const task = JSON.parse(this.dataset.task);
 
+            document.getElementById('modalList').value = task.list_name;
             document.getElementById('modalName').value = task.name;
             document.getElementById('modalStatus').value = task.status;
             document.getElementById('modalDescription').value = task.description;
             document.getElementById('modalDueDate').value = task.due_date;
+        
+            const assigneesList = document.getElementById('modalAssignees');
+            assigneesList.innerHTML = '';
+
+            if (task.assignees.length === 0) {
+                assigneesList.innerHTML = '<li><em>Unassigned</em></li>';
+            } else {
+                task.assignees.forEach(a => {
+                    const li = document.createElement('li');
+                    li.textContent = a.username || a.email || 'Unknown User';
+                    assigneesList.appendChild(li);
+                });
+            }
 
             modal.style.display = 'block';
         });

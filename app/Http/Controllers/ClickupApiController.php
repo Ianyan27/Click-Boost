@@ -96,18 +96,6 @@ class ClickupApiController extends Controller
 
     public function getFolders(){
 
-        $responseFolder = Http::withHeaders([
-            'Authorization' => env('CLICKUP_API_TOKEN'),
-            'Accept' => 'application/json' 
-        ])->get("https://api.clickup.com/api/v2/space/90165960030/folder");
-
-        $folders = collect($responseFolder->json()['folders'])->map(function($folder){
-            return (object) [
-                'id' => $folder['id'],
-                'name' => $folder['name']
-            ];
-        });
-
         $responseSpaces = Http::withHeaders([
             'Authorization' => env('CLICKUP_API_TOKEN'),
             'Accept' => 'application/json'
@@ -118,6 +106,23 @@ class ClickupApiController extends Controller
                 'id' => $space['id'],
                 'name' => $space['name']
             ];
+        });
+
+        // Get folders from all spaces
+        $folders = $spaces->flatMap(function ($space) {
+            $responseFolder = Http::withHeaders([
+                'Authorization' => env('CLICKUP_API_TOKEN'),
+                'Accept' => 'application/json' 
+            ])->get("https://api.clickup.com/api/v2/space/{$space->id}/folder");
+
+            return collect($responseFolder->json()['folders'] ?? [])->map(function($folder) use ($space) {
+                return (object) [
+                    'id' => $folder['id'],
+                    'name' => $folder['name'],
+                    'space_id' => $space->id,
+                    'space_name' => $space->name
+                ];
+            });
         });
 
         return view('pages.folders_page', compact('folders', 'spaces'));
@@ -137,15 +142,21 @@ class ClickupApiController extends Controller
             ];
         });
 
-        $responseLists = Http::withHeaders([
-            'Authorization' => env('CLICKUP_API_TOKEN'),
-            'Accept' => 'application/json'
-        ])->get('https://api.clickup.com/api/v2/folder/90167945606/list');
+        // Get lists from all folders
+        $lists = $folders->flatMap(function ($folder) {
+            $responseLists = Http::withHeaders([
+                'Authorization' => env('CLICKUP_API_TOKEN'),
+                'Accept' => 'application/json'
+            ])->get("https://api.clickup.com/api/v2/folder/{$folder->id}/list");
 
-        $lists = collect($responseLists->json()['lists'])->map(function ($list) {
-            return (object) [
-                'name' => $list['name']
-            ];
+            return collect($responseLists->json()['lists'] ?? [])->map(function ($list) use ($folder) {
+                return (object) [
+                    'id' => $list['id'],
+                    'name' => $list['name'],
+                    'folder_id' => $folder->id,
+                    'folder_name' => $folder->name
+                ];
+            });
         });
 
         Log::info($lists);
@@ -154,6 +165,25 @@ class ClickupApiController extends Controller
     }
 
     public function getTasks() {
+
+        $responseTeam = Http::withHeaders([
+            'Authorization' => env('CLICKUP_API_TOKEN'),
+            'Accept' => 'application/json'
+        ])->get("https://api.clickup.com/api/v2/team");
+
+        $members = collect($responseTeam->json()['teams'])
+            ->flatMap(function($team){
+                return $team['members'];
+            })
+            ->map(function($member){
+                return (object) [
+                    'id' => $member['user']['id'],
+                    'username' => $member['user']['username'],
+                    'email' => $member['user']['email']
+                ];
+            })
+            ->unique('email')
+            ->values();
 
         $responseLists = Http::withHeaders([
             'Authorization' => env('CLICKUP_API_TOKEN'),
@@ -167,23 +197,59 @@ class ClickupApiController extends Controller
             ];
         });
 
-        $responseTasks = Http::withHeaders([
-            'Authorization' => env('CLICKUP_API_TOKEN'),
-            'Accept' => 'application/json'
-        ])->get('https://api.clickup.com/api/v2/list/901612792997/task');
+        $tasks = $lists->flatMap(function ($list) {
+            $responseTasks = Http::withHeaders([
+                'Authorization' => env('CLICKUP_API_TOKEN'),
+                'Accept' => 'application/json'
+            ])->get("https://api.clickup.com/api/v2/list/{$list->id}/task");
 
-        $tasks = collect($responseTasks->json()['tasks'])->map(function ($task){
-            return (object) [
-                'name'            => $task['name'],
-                'status'          => $task['status']['status'],
-                'description'     => $task['description'],
-                'due_date'        => date('F d, Y', $task['due_date'] / 1000)
+            return collect($responseTasks->json()['tasks'] ?? [])->map(function ($task) use ($list) {
+                return (object) [
+                    'name'            => $task['name'],
+                    'status'          => $task['status']['status'],
+                    'description'     => $task['description'],
+                    'due_date'        => date('F d, Y', $task['due_date'] / 1000),
+                    'assignees'       => collect($task['assignees'] ?? [])->map(function ($assignee) {
+                        return (object) [
+                            'id'      => $assignee['id'],
+                            'username'=> $assignee['username'],
+                            'emai'    => $assignee['email']
+                        ];
+                    })->values(),
+                    'list_id'         => $list->id,
+                    'list_name'       => $list->name
             ];
+            });
         });
 
         $taskStatuses = collect($tasks)->pluck('status')->unique()->sort()->values();
 
-        return view('pages.tasks_list_page', compact('tasks', 'lists', 'taskStatuses'));
+        return view('pages.tasks_list_page', compact('tasks', 'lists', 'members', 'taskStatuses'));
+    }
+
+    public function getMembers(){
+
+        $responseTeam = Http::withHeaders([
+            'Authorization' => env('CLICKUP_API_TOKEN'),
+            'Accept' => 'application/json'
+        ])->get("https://api.clickup.com/api/v2/team");
+
+        $members = collect($responseTeam->json()['teams'])
+            ->flatMap(function($team){
+                return $team['members'];
+            })
+            ->map(function($member){
+                return (object) [
+                    'username' => $member['user']['username'],
+                    'email' => $member['user']['email']
+                ];
+            })
+            ->unique('email')
+            ->values();
+
+        Log::info($members);
+
+        return view('pages.members_page', compact('members'));
     }
 
     public function createSpace(Request $request){
@@ -289,12 +355,22 @@ class ClickupApiController extends Controller
             'name'          => 'required|string|max:255',
             'description'   => 'nullable|string',
             'due_date'      => 'nullable|string',
-            'status'        => 'required|string'
+            'status'        => 'required|string',
+            'assignees'     => 'nullable|array'
         ]);
 
         $listId = $validated['list'];
 
         $duedate = $validated['due_date'] ? strtotime($validated['due_date']) * 1000 : null;
+
+        $assignees = array_map(
+            'intval', $validated['assignees'] ?? []
+        );
+
+        Log::info('Assignees from request', [
+            'assignees' => $assignees
+        ]);
+
 
         $response = Http::withHeaders([
                 'Authorization' => $token,
@@ -305,6 +381,12 @@ class ClickupApiController extends Controller
             'description' => $validated['description'],
             'status' => $validated['status'],
             'due_date' => $duedate,
+            'assignees' => $assignees       
+        ]);
+
+        Log::info('ClickUp response', [
+            'status' => $response->status(),
+            'body'   => $response->json()
         ]);
 
         if($response->Failed()){

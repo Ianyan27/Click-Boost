@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="modal-body">
-        <form action="{{ route('create#task') }}" method="POST" id="createTaskForm">
+        <form action="{{ route('clickup.tasks') }}" method="POST" id="createTaskForm">
             @csrf
             <div class="create-task-dropdown-container">
                 <label for="list">Select List:</label>
@@ -41,6 +41,23 @@
                         <option value=" {{{ $task }}} "> {{ $task }}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="create-task-assignees-container">
+                <label>Select Assignees:</label>
+                <ul>
+                    @foreach ($members as $member)
+                        <li>
+                            <label>
+                                <input 
+                                    type="checkbox"
+                                    name="assignees[]"
+                                    value="{{ $member->id }}"
+                                >
+                                {{ $member->username ?: $member->email ?: 'Unknown User' }}
+                            </label>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
             <div class="submit-btn-ctn">
                 <button type="submit" onclick="closeModal()">

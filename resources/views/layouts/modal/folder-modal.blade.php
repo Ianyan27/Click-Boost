@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="modal-body">
-        <form action="{{ route('create#folder') }}" method="POST" id="createFolderForm">
+        <form action="{{ route('clickup.folders') }}" method="POST" id="createFolderForm">
             @csrf
             <div class="create-dropdown-container">
                 <label for="space">Select Space:</label>

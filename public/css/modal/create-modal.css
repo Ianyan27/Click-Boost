@@ -21,7 +21,7 @@
 }
 
 .task {
-    min-height: 255px;
+    min-height: 315px;
 }
 
 .create-modal .modal-header .button-section,
@@ -47,7 +47,7 @@
 .create-dropdown-container,
 .create-name-container,
 .create-description-container,
-.create-due-date-container
+.create-due-date-container,
 .view-dropdown-container,
 .view-name-container,
 .view-description-container,
@@ -64,16 +64,47 @@
 .create-task-description-container,
 .create-task-due-date-container,
 .create-task-status-container,
+.create-task-assignees-container,
 .view-task-dropdown-container,
 .view-task-name-container,
 .view-task-description-container,
 .view-task-due-date-container,
-.view-task-status-container {
-    height: 30px;
+.view-task-status-container,
+.view-task-assignees-container {
+    height: 35px;
     padding: 5px 10px;
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: 160px 1fr;
+}
+
+.create-task-assignees-container ul,
+.view-task-assignees-container ul {
+    max-height: 25px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.create-task-assignees-container ul li,
+.view-task-assignees-container ul li {
+    height: 25px;
+    list-style-type: none;
+}
+
+.view-task-assignees-container ul li {
+    padding-left: 10px;
+}
+
+.create-task-assignees-container ul li label,
+.view-task-assignees-container ul li label {
+    padding-left: 10px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .submit-btn-ctn {
@@ -89,4 +120,10 @@
     width: 115px;
     border: 1px solid black;
     border-radius: 6px;
+}
+
+input, select {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding-left: 10px;
 }

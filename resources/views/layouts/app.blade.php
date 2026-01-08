@@ -28,27 +28,27 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('spaces') }}">
+                    <a href="{{ route('clickup.spaces') }}">
                         <i class="fa-solid fa-shuttle-space"></i><span>Spaces</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('folders') }}">
+                    <a href="{{ route('clickup.folders') }}">
                         <i class="fa-solid fa-folder"></i><span>Folder</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('lists') }}">
+                    <a href="{{ route('clickup.lists') }}">
                         <i class="fa-solid fa-list"></i><span>Lists</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('tasks') }}">
+                    <a href="{{ route('clickup.tasks') }}">
                         <i class="fa-solid fa-list"></i><span>Tasks</span>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{ route('clickup.members') }}">
                         <i class="fa-solid fa-user"></i><span>Members</span>
                     </a>
                 </li>
@@ -60,7 +60,7 @@
                     </a>
                 </li>
                 <li>
-                    <form action=" {{ route('user#logout') }} " method="POST">
+                    <form action=" {{ route('user.logout') }} " method="POST">
                         @csrf
                         <button class="logout-btn" type="submit">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span>

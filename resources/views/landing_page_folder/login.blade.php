@@ -25,7 +25,7 @@
                     <h2>User Login</h2>
                 </div>
                 <div class="inputs-container">
-                    <form action=" {{ route('user#login-account') }}" method="POST">
+                    <form action=" {{ route('user.login') }}" method="POST">
                         @csrf
                         <div class="email-container">
                             <input type="text" placeholder="Email" name="email" required>
@@ -51,7 +51,7 @@
                     <h2>User Registration</h2>
                 </div>
                 <div>
-                    <form action="{{ route('user#register-new-account') }}" method="POST">
+                    <form action="{{ route('user.register') }}" method="POST">
                         @csrf
                         <div class="username-container">
                             <input type="text" placeholder="Username" name="username" required>

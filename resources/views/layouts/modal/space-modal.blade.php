@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="modal-body">
-        <form action="{{ route('create#space') }}" method="POST" id="createSpaceForm">
+        <form action="{{ route('clickup.spaces') }}" method="POST" id="createSpaceForm">
             @csrf
             <div class="create-dropdown-container">
                 <label for="team">Select Workspace:</label>

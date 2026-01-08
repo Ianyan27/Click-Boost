@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="{{ asset('css/modal/create-modal.css') }}">
 
-<div class="view-modal task" id="viewTaskMdl">
+<div class="view-modal task" id="viewListMdl">
     <div class="modal-header">
         <div class="button-section">
             <button id="closeModal">
@@ -8,13 +8,17 @@
             </button>
         </div>
         <div class="title-section">
-            <span>View Task</span>
+            <span>View Lists</span>
         </div>
     </div>
     <div class="modal-body">
-        <div class="view-task-dropdown-container">
-            <label for="list">List:</label>
-            <input id="modalList" type="text" readonly>
+        <div class="view-list-dropdown-container">
+            <label for="list">Select List:</label>
+            <select name="list" id="list">
+                @foreach ($lists as $list)
+                    <option value="{{ $list->id }}">{{ $list->name }}</option>
+                @endforeach
+            </select>
         </div>
         <div class="view-task-name-container">
             <label>Task Name:</label>
@@ -30,13 +34,7 @@
         </div>
         <div class="view-task-status-container">
             <label for="status">Task Status:</label>
-            <input id="modalStatus" type="text" readonly>
-        </div>
-        <div class="view-task-assignees-container">
-            <label>Assigned Assignees:</label>
-            <ul id="modalAssignees">
-                
-            </ul>
+            <input id="modalStatus" type="text">
         </div>
         <div class="submit-btn-ctn">
             <button id="closeModal">

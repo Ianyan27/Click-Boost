@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="modal-body">
-        <form action="{{ route('create#list') }}" method="POST" id="createListForm">
+        <form action="{{ route('clickup.lists') }}" method="POST" id="createListForm">
             @csrf
             <div class="create-dropdown-container">
                 <label for="folder">Select Folder:</label>

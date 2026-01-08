@@ -8,21 +8,21 @@ Route::get('/', function () {
     return view('landing_page_folder.login');
 });
 
-Route::get('/dashboard', function(){
-    return view('landing_page_folder.dashboard');
+Route::prefix('user')->name('user.')->group(function () {
+
+    Route::post('/login', [
+        ClickupUserController::class, 'check'
+    ])->name('login');
+
+    Route::post('register', [
+        ClickupUserController::class, 'store'
+    ])->name('register');
+
+    Route::post('/logout', [
+        ClickupUserController::class, 'logout'
+    ])->name('logout');
+
 });
-
-Route::post('/user-login/check', [
-    ClickupUserController::class, 'check'
-])->name('user#login-account');
-
-Route::post('/user-register/store', [
-    ClickupUserController::class, 'store'
-])->name('user#register-new-account');
-
-Route::post('/user-logout', [
-    ClickupUserController::class, 'logout'
-])->name('user#logout');
 
 // Clickup API Routes
 
@@ -30,34 +30,32 @@ Route::get('/dashboard', [
     ClickupApiController::class, 'index'
 ])->name('dashboard');
 
-Route::get('/clickup-spaces', [
-    ClickupApiController::class, 'getTeams'
-])->name('spaces');
+Route::prefix('clickup')->name('clickup.')->group(function (){
 
-Route::get('/clickup-folder', [
-    ClickupApiController::class, 'getFolders'
-])->name('folders');
+    Route::get('/spaces', [ClickupApiController::class, 'getTeams'])
+        ->name('spaces');
 
-Route::get('/clickup-lists', [
-    ClickupAPIController::class, 'getLists'
-])->name('lists');
+    Route::get('/folders', [ClickupApiController::class, 'getFolders'])
+        ->name('folders');
 
-Route::get('/clickup-tasks', [
-    ClickupApiController::class, 'getTasks'
-])->name('tasks');
+    Route::get('/lists', [ClickupApiController::class, 'getLists'])
+        ->name('lists');
 
-Route::post('/create-space', [
-    ClickupApiController::class, 'createSpace'
-])->name('create#space');
+    Route::get('/tasks', [ClickupApiController::class, 'getTasks'])
+        ->name('tasks');
 
-Route::post('/create-folder', [
-    ClickupApiController::class, 'createFolder'
-])->name('create#folder');
+    Route::get('/members', [ClickupApiController::class, 'getMembers'])
+        ->name('members');
 
-Route::post('/create-list', [
-    ClickupApiController::class, 'createList'
-])->name('create#list');
+    Route::post('/space', [ClickupApiController::class, 'createSpace'])
+        ->name('space.create');
 
-Route::post('/create-task', [
-    ClickupApiController::class, 'createTask'
-])->name('create#task');
+    Route::post('/folder', [ClickupApiController::class, 'createFolder'])
+        ->name('folder.create');
+
+    Route::post('/list', [ClickupApiController::class, 'createList'])
+        ->name('list.create');
+
+    Route::post('/task', [ClickupApiController::class, 'createTask'])
+        ->name('task.create');
+});
