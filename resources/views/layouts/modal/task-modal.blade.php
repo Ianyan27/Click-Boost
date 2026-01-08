@@ -3,7 +3,7 @@
 <div class="create-modal task" id="createTaskMdl">
     <div class="modal-header">
         <div class="button-section">
-            <button id="closeModal">
+            <button id="closePopUpModal">
                 <i class="fa-solid fa-x"></i>
             </button>
         </div>
@@ -43,23 +43,10 @@
                 </select>
             </div>
             <div class="submit-btn-ctn">
-                <button type="submit" id="closeModal">
+                <button type="submit" onclick="closeModal()">
                     Create Task
                 </button>
             </div>
         </form>
     </div>
 </div>
-
-<script>
-    let closeModal = document.getElementById('closeModal');
-    let closeCreateTaskModal = document.getElementById('createTaskMdl');
-    let resetCreateTaskForm = document.getElementById('createTaskForm');
-
-    closeModal.addEventListener('click', function(){
-        closeCreateTaskModal.style.display = 'none';
-        createTaskBtn.style.visibility = 'visible';
-        resetCreateTaskForm.reset();
-        modalStatus = true;
-    })
-</script>

@@ -1,4 +1,5 @@
-.create-modal {
+.create-modal,
+.view-modal {
     display: none;
     position: fixed;
     top: 50%;
@@ -23,7 +24,8 @@
     min-height: 255px;
 }
 
-.create-modal .modal-header .button-section{
+.create-modal .modal-header .button-section,
+.view-modal .modal-header .button-section{
     display: flex;
     align-items: center;
     justify-content: end;
@@ -31,7 +33,8 @@
     margin: 10px;
 }
 
-.create-modal .modal-header .title-section {
+.create-modal .modal-header .title-section,
+.view-modal .modal-header .title-section {
     position: absolute;
     top: 10px;
     height: 30px;
@@ -44,7 +47,11 @@
 .create-dropdown-container,
 .create-name-container,
 .create-description-container,
-.create-due-date-container{
+.create-due-date-container
+.view-dropdown-container,
+.view-name-container,
+.view-description-container,
+.view-due-date-container{
     height: 30px;
     padding: 5px 10px;
     display: grid;
@@ -56,7 +63,12 @@
 .create-task-name-container,
 .create-task-description-container,
 .create-task-due-date-container,
-.create-task-status-container {
+.create-task-status-container,
+.view-task-dropdown-container,
+.view-task-name-container,
+.view-task-description-container,
+.view-task-due-date-container,
+.view-task-status-container {
     height: 30px;
     padding: 5px 10px;
     display: grid;

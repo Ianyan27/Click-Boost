@@ -30,15 +30,12 @@
                                 <div class="action-buttons">
                                     <button>
                                         <i class="fa-solid fa-eye"></i>
-                                        <span>View</span>
                                     </button>
                                     <button>
                                         <i class="fa-solid fa-pencil"></i>
-                                        <span>Edit</span>
                                     </button>
                                     <button>
                                         <i class="fa-solid fa-trash"></i>
-                                        <span>Delete</span>
                                     </button>
                                 </div>
                             </td>

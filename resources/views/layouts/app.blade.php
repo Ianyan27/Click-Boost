@@ -47,6 +47,11 @@
                         <i class="fa-solid fa-list"></i><span>Tasks</span>
                     </a>
                 </li>
+                <li>
+                    <a href="">
+                        <i class="fa-solid fa-user"></i><span>Members</span>
+                    </a>
+                </li>
             </ul>
             <ul>
                 <li>

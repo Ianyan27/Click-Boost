@@ -174,8 +174,10 @@ class ClickupApiController extends Controller
 
         $tasks = collect($responseTasks->json()['tasks'])->map(function ($task){
             return (object) [
-                'name' => $task['name'],
-                'status' => $task['status']['status']
+                'name'            => $task['name'],
+                'status'          => $task['status']['status'],
+                'description'     => $task['description'],
+                'due_date'        => date('F d, Y', $task['due_date'] / 1000)
             ];
         });
 

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @extends('layouts.modal.task-modal')
+@extends('layouts.modal.view-data-modal.view-task-modal')
 
 @section('content')
 <div class="clickup-container">
@@ -30,17 +31,15 @@
                             <td colspan="2">{{ $task->status }}</td>
                             <td class="action-column" colspan="2">
                                 <div class="action-buttons">
-                                    <button>
+                                    <button class="view-task-btn"
+                                        data-task = '@json($task)'>
                                         <i class="fa-solid fa-eye"></i>
-                                        <span>View</span>
                                     </button>
                                     <button>
                                         <i class="fa-solid fa-pencil"></i>
-                                        <span>Edit</span>
                                     </button>
                                     <button>
                                         <i class="fa-solid fa-trash"></i>
-                                        <span>Delete</span>
                                     </button>
                                 </div>
                             </td>
@@ -54,13 +53,45 @@
 <script>
     let createTaskBtn = document.getElementById('createTskBtn');
     let createTaskModal = document.getElementById('createTaskMdl');
+    
+    let viewTaskModal = document.getElementById('viewTaskMdl');
 
     createTaskBtn.addEventListener('click', function(){
         createTaskModal.style.display = 'block';
         createTaskBtn.style.visibility = 'hidden';
-        modalStatus = true;
+        // modalStatus = true;
+    });
+
+    document.getElementById('closePopUpModal').addEventListener('click', function(){
+        createTaskModal.style.display = 'none';
+        createTaskBtn.style.visibility = 'visible';
     })
 </script>
-@endsection
 
-<script src="{{ asset('js/modal/show-create-task-modal.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const modal = document.getElementById('viewTaskMdl');
+    const closeBtn = document.getElementById('closeModal');
+
+    document.querySelectorAll('.view-task-btn').forEach(button => {
+        button.addEventListener('click', function () {
+
+            const task = JSON.parse(this.dataset.task);
+
+            document.getElementById('modalName').value = task.name;
+            document.getElementById('modalStatus').value = task.status;
+            document.getElementById('modalDescription').value = task.description;
+            document.getElementById('modalDueDate').value = task.due_date;
+
+            modal.style.display = 'block';
+        });
+    });
+
+    closeBtn.addEventListener('click', function () {
+        modal.style.display = 'none';
+    });
+
+});
+</script>
+@endsection
