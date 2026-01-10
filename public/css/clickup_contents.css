@@ -109,6 +109,11 @@
     text-align: center;
 }
 
+.clickup-table-container .td-status {
+    vertical-align: middle;
+    text-align: center;
+}
+
 /* SUGGESTION: Remove border from last header */
 .clickup-table-container table thead tr th:last-child {
     border-right: none;

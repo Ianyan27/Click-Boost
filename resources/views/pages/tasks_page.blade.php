@@ -34,7 +34,7 @@
                         <tr>
                             <td colspan="5">{{ $task->name }}</td>
                             <td colspan="3" class="th-short-text">{{ $task->list_name }}</td>
-                            <td colspan="2">
+                            <td colspan="2" class="td-status">
                                 <span class="status-badge {{ strtolower(str_replace(' ', '-', $task->status)) }}">
                                     {{ $task->status }}
                                 </span>

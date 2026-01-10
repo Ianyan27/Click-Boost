@@ -20,18 +20,59 @@ class ClickupApiController extends Controller
         $tasks = collect($response->json()['tasks'])->map(function ($task){
             return (object) [
                 'name' => $task['name'],
-                'status' => $task['status']['status'] ?? 'unknown'
+                'status' => $task['status']['status'] ?? 'unknown',
+                'assignees' => collect($task['assignees'])->pluck('username')->toArray()
             ];
         });
 
         $statusCounts = $tasks->pluck('status')->countBy();
 
-        Log::info($tasks);
-        Log::info($statusCounts);
+        $responseTeam = Http::withHeaders([
+            'Authorization' => env('CLICKUP_API_TOKEN'),
+            'Accept' => 'application/json'
+        ])->get("https://api.clickup.com/api/v2/team");
 
-        return view('landing_page_folder.dashboard', compact('tasks', 'statusCounts'));
+        $members = collect($responseTeam->json()['teams'])
+            ->flatMap(function($team){
+                return $team['members'];
+            })
+            ->map(function($member){
+                return (object) [
+                    'username' => $member['user']['username'],
+                    'email' => $member['user']['email']
+                ];
+            })
+            ->unique('email')
+            ->values();
+
+        // Get task statistics per assignee
+        $assigneeStats = $tasks
+            ->flatMap(function($task) {
+                // Create a row for each assignee in the task
+                return collect($task->assignees)->map(function($assignee) use ($task) {
+                    return [
+                        'assignee' => $assignee,
+                        'status' => $task->status
+                    ];
+                });
+            })
+            ->groupBy('assignee')
+            ->map(function($assigneeTasks, $assignee) {
+                $statusCounts = collect($assigneeTasks)->pluck('status')->countBy();
+                $topStatus = $statusCounts->sortDesc()->keys()->first();
+                
+                return (object) [
+                    'assignee' => $assignee,
+                    'task_count' => $assigneeTasks->count(),
+                    'top_status' => $topStatus,
+                    'top_status_count' => $statusCounts[$topStatus],
+                    'status_breakdown' => $statusCounts->toArray()
+                ];
+            })
+            ->values();
+
+        return view('landing_page_folder.dashboard', compact('tasks', 'members', 'statusCounts', 'assigneeStats'));
     }
-
     public function getTeams(){
         $responseTeam = Http::withHeaders([
             'Authorization' => env('CLICKUP_API_TOKEN'),
@@ -219,8 +260,6 @@ class ClickupApiController extends Controller
             })
             ->unique('email')
             ->values();
-
-        Log::info($members);
 
         return view('pages.members_page', compact('members'));
     }
