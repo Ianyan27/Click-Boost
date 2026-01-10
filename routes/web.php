@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClickupApiController;
 use App\Http\Controllers\ClickupUserController;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -32,30 +33,46 @@ Route::get('/dashboard', [
 
 Route::prefix('clickup')->name('clickup.')->group(function (){
 
-    Route::get('/spaces', [ClickupApiController::class, 'getTeams'])
-        ->name('spaces');
+    Route::get('/spaces', [
+        ClickupApiController::class, 'getTeams'
+    ])->name('spaces');
 
-    Route::get('/folders', [ClickupApiController::class, 'getFolders'])
-        ->name('folders');
+    Route::get('/folders', [
+        ClickupApiController::class, 'getFolders'
+    ])->name('folders');
 
-    Route::get('/lists', [ClickupApiController::class, 'getLists'])
-        ->name('lists');
+    Route::get('/lists', [
+        ClickupApiController::class, 'getLists'
+    ])->name('lists');
 
-    Route::get('/tasks', [ClickupApiController::class, 'getTasks'])
-        ->name('tasks');
+    Route::get('/tasks', [
+        ClickupApiController::class, 'getTasks'
+    ])->name('tasks');
 
-    Route::get('/members', [ClickupApiController::class, 'getMembers'])
-        ->name('members');
+    Route::get('/members', [
+        ClickupApiController::class, 'getMembers'
+    ])->name('members');
 
-    Route::post('/space', [ClickupApiController::class, 'createSpace'])
-        ->name('space.create');
+    Route::post('/space', [
+        ClickupApiController::class, 'createSpace'
+    ])->name('space.create');
 
-    Route::post('/folder', [ClickupApiController::class, 'createFolder'])
-        ->name('folder.create');
+    Route::post('/folder', [
+        ClickupApiController::class, 'createFolder'
+    ])->name('folder.create');
 
-    Route::post('/list', [ClickupApiController::class, 'createList'])
-        ->name('list.create');
+    Route::post('/list', [
+        ClickupApiController::class, 'createList'
+    ])->name('list.create');
 
-    Route::post('/task', [ClickupApiController::class, 'createTask'])
-        ->name('task.create');
+    Route::post('/create/task', [
+        ClickupApiController::class, 'createTask'
+    ])->name('task.create');
+
+    Route::delete('/clickup/delete', [
+        ClickupAPiController::class, 'delete'
+    ])->name('delete');
+
 });
+
+

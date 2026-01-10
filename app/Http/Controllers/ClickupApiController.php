@@ -61,38 +61,7 @@ class ClickupApiController extends Controller
 
         return view('pages.spaces_page', compact('spaces', 'teams'));
 
-        // $spaceId = $spaces->firstWhere('name', 'Click Boost')->id;
-
-        // $responseFolder = Http::withHeaders([
-        //     'Authorization' => env('CLICKUP_API_TOKEN'),
-        //     'Accept' => 'application/json' 
-        // ])->get("https://api.clickup.com/api/v2/space/{$spaceId}/folder");
-
-        // $folders = collect($responseFolder->json()['folders'])->map(function($folder){
-        //     return (object) [
-        //         'id' => $folder['id'],
-        //         'name' => $folder['name']
-        //     ];
-        // });
-
-        // $folderId = $folders->firstWhere('name', 'Capstone Project')->id;
-
-        // $responseLists = Http::withHeaders([
-        //     'Authorization' => env('CLICKUP_API_TOKEN'),
-        //     'Accept' => 'application/json'
-        // ])->get("https://api.clickup.com/api/v2/folder/{$folderId}/list");
-
-        // $lists = collect($responseLists->json()['lists'])->map(function ($list) {
-        //     return (object) [
-        //         'id' => $list['id'],
-        //         'name' => $list['name']
-        //     ];
-        // });
-
-        // Log::info($lists);
-
-        //     return $lists;
-        }
+    }
 
     public function getFolders(){
 
@@ -119,6 +88,7 @@ class ClickupApiController extends Controller
                 return (object) [
                     'id' => $folder['id'],
                     'name' => $folder['name'],
+                    'lists' => count($folder['lists'] ?? []),
                     'space_id' => $space->id,
                     'space_name' => $space->name
                 ];
@@ -142,7 +112,6 @@ class ClickupApiController extends Controller
             ];
         });
 
-        // Get lists from all folders
         $lists = $folders->flatMap(function ($folder) {
             $responseLists = Http::withHeaders([
                 'Authorization' => env('CLICKUP_API_TOKEN'),
@@ -153,6 +122,9 @@ class ClickupApiController extends Controller
                 return (object) [
                     'id' => $list['id'],
                     'name' => $list['name'],
+                    'content' => !empty($list['content']) ? $list['content'] : 'No Content.',
+                    'due_date' => date('F d, Y', $list['due_date'] / 1000),
+                    'task_count' => $list['task_count'],
                     'folder_id' => $folder->id,
                     'folder_name' => $folder->name
                 ];
@@ -205,6 +177,7 @@ class ClickupApiController extends Controller
 
             return collect($responseTasks->json()['tasks'] ?? [])->map(function ($task) use ($list) {
                 return (object) [
+                    'id'              => $task['id'],
                     'name'            => $task['name'],
                     'status'          => $task['status']['status'],
                     'description'     => $task['description'],
@@ -224,7 +197,7 @@ class ClickupApiController extends Controller
 
         $taskStatuses = collect($tasks)->pluck('status')->unique()->sort()->values();
 
-        return view('pages.tasks_list_page', compact('tasks', 'lists', 'members', 'taskStatuses'));
+        return view('pages.tasks_page', compact('tasks', 'lists', 'members', 'taskStatuses'));
     }
 
     public function getMembers(){
@@ -396,5 +369,28 @@ class ClickupApiController extends Controller
         }
 
         return redirect()->back()->with('success', 'Task successfully created in ClickUp!');
+    }
+
+    public function delete(Request $request){
+        
+        $request->validate([
+            'endpoint' => 'required|string',
+        ]);
+
+        $endpoint = $request->endpoint;
+
+        $response = Http::withHeaders([
+            'Authorization' => env('CLICKUP_API_TOKEN'),
+            'Accept' => 'application/json',
+        ])->delete("https://api.clickup.com/api/v2/{$endpoint}");
+    
+        if ($response->failed()) {
+            return back()->withErrors([
+                'delete_error' => 'Failed to delete item in ClickUp.'
+            ]);
+        }
+
+        return back()->with('success', 'Item deleted successfully.');
+
     }
 }

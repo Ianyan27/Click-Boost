@@ -4,11 +4,26 @@
     box-sizing: border-box;
 }
 
+body {
+    /* UPDATED: Modern font family */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f7fa;
+}
+
+/* HEADER STYLING */
 .header {
-    color: black;
+    /* UPDATED: Modern gradient background */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* UPDATED: Changed text color to white */
+    color: white;
     display: flex;
-    border-bottom: 1px solid #ccc;
+    /* UPDATED: Removed border, added shadow */
+    border-bottom: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .header .logo-name,
@@ -25,7 +40,17 @@
 
 .logo-name .app-name {
     font-size: 24px;
-    font-weight: bold;
+    font-weight: 700;
+    /* UPDATED: White text for contrast */
+    color: #ffffff;
+    letter-spacing: -0.5px;
+}
+
+/* SUGGESTION: Add logo icon before app name */
+.logo-name .app-name::before {
+    content: '✦';
+    margin-right: 10px;
+    font-size: 28px;
 }
 
 .header .user-account {
@@ -33,11 +58,12 @@
     justify-content: flex-end;
     align-items: center;
     padding-right: 35px;
+    gap: 8px;
 }
 
 .header .user-account i:nth-child(1),
 .header .user-account .user-name,
-.header .user-account button{
+.header .user-account button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -47,22 +73,34 @@
     width: 20px;
     height: 25px;
     margin-right: 5px;
+    /* UPDATED: White icon */
+    color: #ffffff;
 }
 
 .header .user-account .dropdown-button {
     border: none;
-    color: black;
-    background-color: white;
+    /* UPDATED: Transparent background with white text */
+    color: #ffffff;
+    background-color: transparent;
     font-weight: 600;
     width: 25px;
     height: 25px;
     padding-top: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 4px;
 }
 
-.user-account .user-name{
-    font-size: 18px;
-    font-weight: normal;
+.header .user-account .dropdown-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.user-account .user-name {
+    font-size: 16px;
+    font-weight: 500;
     height: 25px;
+    /* UPDATED: White text */
+    color: #ffffff;
 }
 
 .user-account .dropdown-button i {
@@ -70,23 +108,29 @@
     height: inherit;
 }
 
+/* MAIN CONTENT */
 .main-content {
     display: flex;
 }
 
+/* SIDEBAR STYLING */
 .sidebar {
     width: 225px;
-    /* min-height: calc(100vh - 61px); */
-    max-height: calc(100vh - 61px);
-    background-color: #ccc;
+    max-height: calc(100vh - 60px);
+    /* UPDATED: Clean white background */
+    background-color: #ffffff;
     display: grid;
     grid-template-rows: auto 1fr auto;
-    border-right: 1px solid black;
+    /* UPDATED: Softer border */
+    border-right: 1px solid #e2e8f0;
+    /* SUGGESTION: Add subtle shadow for depth */
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
 }
 
 .sidebar ul {
     list-style-type: none;
     min-height: 40px;
+    padding: 8px 0;
 }
 
 .sidebar ul:first-child {
@@ -96,32 +140,151 @@
 .sidebar ul:last-child {
     height: auto;
     grid-row: 3;
+    /* SUGGESTION: Add separator line above logout */
+    border-top: 1px solid #e2e8f0;
+    padding: 12px 0;
 }
 
 .sidebar ul li {
     height: 40px;
     align-content: center;
     text-align: start;
-    background-color: white;
+    /* UPDATED: Transparent background by default */
+    background-color: transparent;
     padding-left: 35px;
+    /* SUGGESTION: Add smooth transition */
+    transition: all 0.2s ease;
+    margin: 2px 8px;
+    border-radius: 8px;
+}
+
+/* SUGGESTION: Hover state for menu items */
+.sidebar ul li:hover {
+    background-color: #f0f4ff;
+    padding-left: 40px;
+}
+
+/* SUGGESTION: Active/selected state */
+.sidebar ul li.active {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-left: 3px solid #667eea;
+    padding-left: 32px;
 }
 
 .sidebar ul li a {
     text-decoration: none;
-    color: black;
+    /* UPDATED: Modern text color */
+    color: #4a5568;
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s ease;
+}
+
+.sidebar ul li:hover a {
+    color: #667eea;
+}
+
+.sidebar ul li.active a {
+    color: #667eea;
+    font-weight: 600;
 }
 
 .sidebar ul li a i {
-    margin-right: 5px;
+    margin-right: 10px;
+    width: 18px;
+    text-align: center;
 }
 
 .sidebar .logout-btn {
-    background-color: white;
-    color: black;
+    /* UPDATED: Modern button styling */
+    background-color: transparent;
+    color: #f56565;
     border: none;
+    width: 100%;
+    text-align: left;
+    height: 40px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
 }
 
+.sidebar .logout-btn:hover {
+    background-color: #fff5f5;
+    padding-left: 40px;
+}
+
+.sidebar .logout-btn i {
+    margin-right: 10px;
+    width: 18px;
+    text-align: center;
+}
+
+/* CONTENT AREA */
 .content {
     width: calc(100% - 225px);
-    min-height: calc(100vh - 61px);
+    min-height: calc(100vh - 60px);
+    /* UPDATED: Light background */
+    background-color: #f5f7fa;
+    overflow-y: auto;
+}
+
+/* SUGGESTION: Add scrollbar styling */
+.sidebar::-webkit-scrollbar,
+.content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track,
+.content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.sidebar::-webkit-scrollbar-thumb,
+.content::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover,
+.content::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* SUGGESTION: Responsive design */
+@media (max-width: 768px) {
+    .header .logo-name,
+    .header .user-account {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .logo-name .app-name {
+        font-size: 20px;
+    }
+
+    .sidebar {
+        width: 200px;
+    }
+
+    .sidebar ul li {
+        padding-left: 20px;
+    }
+
+    .sidebar ul li:hover {
+        padding-left: 25px;
+    }
+
+    .sidebar .logout-btn {
+        padding-left: 20px;
+    }
+
+    .content {
+        width: calc(100% - 200px);
+    }
 }

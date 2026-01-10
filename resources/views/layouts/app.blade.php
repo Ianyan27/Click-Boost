@@ -8,6 +8,7 @@
     <link rel="stylesheet" href=" {{ asset('css/app.css') }}">
     <link rel="stylesheet" href=" {{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href=" {{ asset('css/clickup_contents.css') }} ">
+    <link rel="stylesheet" href=" {{ asset('css/statuses/statuses.css') }} ">
 </head>
 <body>
     <div class="header">
@@ -74,5 +75,32 @@
         </div>
     </div>
     <script src="https://kit.fontawesome.com/4d2a01d4ef.js" crossorigin="anonymous"></script>
+    <script>
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function () {
+
+            const entity = this.dataset.entity;     // task, list, space
+            const id = this.dataset.id;              // clickup id
+            const name = this.dataset.name ?? '';
+
+            document.getElementById('deleteTitle').textContent =
+                `Delete ${entity}`;
+
+            document.getElementById('deleteMessage').textContent =
+                `You're about to delete this ${entity}${name ? ': ' + name : ''}.`;
+
+            document.getElementById('deleteEndpoint').value =
+                `${entity}/${id}`;
+
+            document.getElementById('deleteMdl').style.display = 'block';
+        });
+    });
+
+    document.querySelectorAll('.close-delete-modal').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.getElementById('deleteMdl').style.display = 'none';
+        });
+    });
+    </script>
 </body>
 </html>

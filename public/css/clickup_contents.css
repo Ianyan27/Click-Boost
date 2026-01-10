@@ -3,18 +3,81 @@
     height: calc(100vh - 80px);
 }
 
-/* .task-container .task-table-container {
-    width: 100%;
-    height: clamp(250px, 300px, calc(100% - 350px));
-} */
+.task-container,
+.space-container,
+.folder-container,
+.list-container {
+    /* SUGGESTION: Add padding and background for better definition */
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.button-section-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    margin-bottom: 20px;
+}
+
+.button-section-container .screen-title {
+    font-size: 2em;
+    /* UPDATED: Modern title color */
+    color: #2d3748;
+    font-weight: 600;
+    letter-spacing: -1px;
+}
+
+.button-section-container div:nth-child(2) {
+    height: 30px;
+    /* SUGGESTION: Add gap for multiple buttons */
+    display: flex;
+    gap: 10px;
+}
+
+.button-section-container div button {
+    height: inherit;
+    width: 150px;
+    /* UPDATED: Modern button styling */
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* SUGGESTION: Enhanced button hover effect */
+.button-section-container div button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.button-section-container div button:active {
+    transform: translateY(0);
+}
 
 .clickup-table-container {
     width: 100%;
+    flex: 1;
+    overflow: auto;
+    /* SUGGESTION: Add subtle border and background */
+    background-color: #ffffff;
+    border-radius: 8px;
+    /* SUGGESTION: Add subtle border */
+    border: 1px solid #e2e8f0;
 }
 
 .clickup-table-container table {
-    width: inherit;
-    border-radius: 6px;
+    width: 100%;
     border-collapse: collapse;
 }
 
@@ -24,80 +87,225 @@
     z-index: 10;
 }
 
-.clickup-table-container table tbody {
-    overflow-y: auto;
-    max-height: calc(100vh - 160px);
-}
-
+/* UPDATED: Remove colspan, use regular columns */
 .clickup-table-container table thead tr th {
-    height: 40px;
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 6px;
-    background-color: black;
-    color: white;
-}
-
-.clickup-table-container table tbody tr td {
-    height: 35px;
-    border-bottom: 1px solid black;
-    font-size: 16px;
-    font-weight: 500;
-    padding-left: 10px;
-}
-
-.clickup-table-container thead,
-.clickup-table-container tbody,
-.clickup-table-container tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
-
-.button-section-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     height: 50px;
+    font-size: 15px;
+    font-weight: 600;
+    /* UPDATED: Solid color background instead of gradient */
+    background: #667eea;
+    color: white;
+    /* UPDATED: Better text rendering */
+    text-align: left;
+    padding: 0 16px;
+    letter-spacing: -0.3px;
+    /* SUGGESTION: Add right border for separation between columns */
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.button-section-container .screen-title {
-    font-size: 2em;
+.clickup-table-container .th-actions,
+.clickup-table-container .th-numbers,
+.clickup-table-container .th-short-text {
+    text-align: center;
 }
 
-.button-section-container div:nth-child(2){
-    height: 30px;
+/* SUGGESTION: Remove border from last header */
+.clickup-table-container table thead tr th:last-child {
+    border-right: none;
 }
 
-.button-section-container div button {
-    height: inherit;
-    width: 150px;
-    border: 1px solid black;
-    border-radius: 6px;
+/* SUGGESTION: First header rounded corner */
+.clickup-table-container table thead tr th:first-child {
+    border-top-left-radius: 8px;
+}
+
+/* SUGGESTION: Last header rounded corner */
+.clickup-table-container table thead tr th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* UPDATED: Remove colspan from td */
+.clickup-table-container table tbody tr td {
+    height: 60px;
+    /* UPDATED: Softer border color */
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 0 16px;
+    /* UPDATED: Modern text color */
+    color: #2d3748;
+    /* SUGGESTION: Add transition for smooth hover effects */
+    transition: background-color 0.2s ease;
+}
+
+/* SUGGESTION: Add hover effect on table rows */
+.clickup-table-container table tbody tr:hover {
+    background-color: #f7fafc;
+}
+
+/* SUGGESTION: Remove border from last row */
+.clickup-table-container table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .action-column {
-    vertical-align: middle; 
+    vertical-align: middle;
+    text-align: center;
 }
 
 .action-buttons {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.7rem;
+    gap: 0.5rem;
 }
 
 .action-buttons button {
-    min-height: 20px;
-    height: auto;
-    max-height: 30px;
-    min-width: 40px;
-    width: auto;
-    max-width: 80px;
-    padding: 5px 7.5px;
-    border: 1px solid black;
+    /* UPDATED: Icon button sizing */
+    min-height: 32px;
+    height: 32px;
+    min-width: 32px;
+    width: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* UPDATED: Modern button colors */
+    border: 2px solid #e2e8f0;
     border-radius: 6px;
+    background-color: #ffffff;
+    color: #4a5568;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
+
 .action-buttons button:hover {
     cursor: pointer;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons button:active {
+    transform: translateY(0);
+}
+
+/* SUGGESTION: View button styling */
+.action-buttons button.view-task-btn,
+.action-buttons button.view-list-btn,
+.action-buttons button.view-folder-btn,
+.action-buttons button.view-space-btn {
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.action-buttons button.view-task-btn:hover,
+.action-buttons button.view-list-btn:hover,
+.action-buttons button.view-folder-btn:hover,
+.action-buttons button.view-space-btn:hover {
+    background-color: #f0f4ff;
+    border-color: #5a67d8;
+    color: #5a67d8;
+}
+
+/* SUGGESTION: Edit button styling (for fa-pencil) */
+.action-buttons button:has(.fa-pencil) {
+    border-color: #48bb78;
+    color: #48bb78;
+}
+
+.action-buttons button:has(.fa-pencil):hover {
+    background-color: #f0fff4;
+    border-color: #38a169;
+    color: #38a169;
+}
+
+/* SUGGESTION: Delete button styling */
+.action-buttons button.delete-btn {
+    border-color: #f56565;
+    color: #f56565;
+}
+
+.action-buttons button.delete-btn:hover {
+    background-color: #fff5f5;
+    border-color: #e53e3e;
+    color: #e53e3e;
+}
+
+/* SUGGESTION: Custom scrollbar styling */
+.clickup-table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.clickup-table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.clickup-table-container::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+
+.clickup-table-container::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* SUGGESTION: Empty state styling */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #a0aec0;
+}
+
+.empty-state i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #cbd5e0;
+}
+
+.empty-state p {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+/* SUGGESTION: Responsive adjustments */
+@media (max-width: 768px) {
+    .clickup-container {
+        margin: 10px;
+        height: calc(100vh - 60px);
+    }
+
+    .task-container,
+    .space-container,
+    .folder-container,
+    .list-container {
+        padding: 16px;
+    }
+
+    .button-section-container {
+        flex-direction: column;
+        height: auto;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .button-section-container .screen-title {
+        font-size: 1.5em;
+    }
+
+    .clickup-table-container table thead tr th,
+    .clickup-table-container table tbody tr td {
+        padding: 0 8px;
+        font-size: 12px;
+    }
+
+    .action-buttons button {
+        min-height: 28px;
+        height: 28px;
+        min-width: 28px;
+        width: 28px;
+        font-size: 12px;
+    }
 }
