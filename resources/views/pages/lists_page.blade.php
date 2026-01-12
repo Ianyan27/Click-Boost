@@ -1,12 +1,34 @@
 @extends('layouts.app')
 @extends('layouts.modal.list-modal')
-@extends('layouts.modal.view-data-modal.view-list-modal')
 
 @section('content')
 <x-delete-modal 
     entity="List"
     message="You're about to delete this List."
 />
+<x-view-modal entity="List" modalId="viewMdl">
+    <div class="view-folder-name-container">
+        <label>Folder:</label>
+        <input id="modalFolder" type="text" readonly>
+    </div>
+    <div class="view-folder-space-container">
+        <label>List Name:</label>
+        <input id="modalListName" type="text" readonly>
+    </div>
+    <div class="view-folder-space-container">
+        <label>Content:</label>
+        <input id="modalListContent" type="text" readonly>
+    </div>
+    <div class="view-folder-space-container">
+        <label for="due_date">Due Date:</label>
+        <input id="modalDueDate" type="text" readonly>
+    </div>
+    <div class="view-folder-lists-container">
+        <label>Tasks:</label>
+        <ul id="modalTasks"></ul>
+    </div>
+</x-view-modal>
+
 <div class="clickup-container">
     <div class="list-container">
         <div class="button-section-container">
@@ -67,27 +89,36 @@
     })
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
 
-        const modal = document.getElementById('viewListMdl');
-        const closeBtn = document.getElementById('closeModal');
+    const modal = document.getElementById('viewMdl');
 
-        document.querySelectorAll('.view-data-btn').forEach(button => {
-            button.addEventListener('click', function () {
+    document.querySelectorAll('.view-data-btn').forEach(button => {
+        button.addEventListener('click', function () {
 
-                const list = JSON.parse(this.dataset.list);
+            const list = JSON.parse(this.dataset.list);
 
-                document.getElementById('modalFolder').value = list.folder_name;
-                document.getElementById('modalName').value = list.name;
-                document.getElementById('modalContent').value = list.content;
-                document.getElementById('modalDueDate').value = list.due_date;
+            document.getElementById('modalFolder').value = list.folder_name;
+            document.getElementById('modalListName').value = list.name;
+            document.getElementById('modalListContent').value = list.content;
+            document.getElementById('modalDueDate').value = list.due_date ?? '';
 
-                modal.style.display = 'block';
-            });
+            // ✅ TASKS
+            const modalTasks = document.getElementById('modalTasks');
+            modalTasks.innerHTML = '';
+
+            if (!list.tasks || list.tasks.length === 0) {
+                modalTasks.innerHTML = '<li><em>No tasks in this list</em></li>';
+            } else {
+                list.tasks.forEach(task => {
+                    const li = document.createElement('li');
+                    li.textContent = task.name;
+                    modalTasks.appendChild(li);
+                });
+            }
+
+            modal.style.display = 'block';
         });
-
-    closeBtn.addEventListener('click', function () {
-        modal.style.display = 'none';
     });
 });
 </script>

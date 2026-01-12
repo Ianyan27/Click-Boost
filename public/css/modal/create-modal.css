@@ -260,7 +260,8 @@ padding-left: 10px;
 .view-task-description-container,
 .view-task-due-date-container,
 .view-task-status-container,
-.view-task-assignees-container {
+.view-task-assignees-container,
+.view-folder-lists-container {
     min-height: 35px;
     padding: 5px 10px;
     display: grid;

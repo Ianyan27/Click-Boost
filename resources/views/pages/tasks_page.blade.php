@@ -1,12 +1,38 @@
 @extends('layouts.app')
 @extends('layouts.modal.task-modal')
-@extends('layouts.modal.view-data-modal.view-task-modal')
+{{-- @extends('layouts.modal.view-data-modal.view-task-modal') --}}
 
 @section('content')
 <x-delete-modal 
     entity="Task"
     message="You're about to delete this task."
 />
+<x-view-modal entity="Task" modalId="viewTaskMdl">
+    <div class="view-task-dropdown-container">
+        <label>List:</label>
+        <input id="modalList" type="text" readonly>
+    </div>
+    <div class="view-task-name-container">
+        <label>Task Name:</label>
+        <input id="modalName" type="text" readonly>
+    </div>
+    <div class="view-task-description-container">
+        <label>Description:</label>
+        <input id="modalDescription" type="text" readonly>
+    </div>
+    <div class="view-task-due-date-container">
+        <label>Due Date:</label>
+        <input id="modalDueDate" type="text" readonly>
+    </div>
+    <div class="view-task-status-container">
+        <label>Status:</label>
+        <input id="modalStatus" type="text" readonly>
+    </div>
+    <div class="view-task-assignees-container">
+        <label>Assigned Assignees:</label>
+        <ul id="modalAssignees"></ul>
+    </div>
+</x-view-modal>
 <div class="clickup-container">
     <div class="task-container">
         <div class="button-section-container">

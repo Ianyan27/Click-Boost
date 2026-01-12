@@ -1,0 +1,81 @@
+.view-folder-lists-container {
+    align-items: flex-start;
+}
+
+.view-folder-lists-container label {
+    padding-top: 8px;
+}
+
+.view-folder-lists-container ul {
+    max-height: 120px;
+    overflow-y: auto;
+    background-color: #f7fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px;
+}
+
+/* Custom Scrollbar */
+.view-folder-lists-container ul::-webkit-scrollbar {
+    width: 6px;
+}
+
+.view-folder-lists-container ul::-webkit-scrollbar-track {
+    background: #e2e8f0;
+    border-radius: 8px;
+}
+
+.view-folder-lists-container ul::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 8px;
+}
+
+.view-folder-lists-container ul::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* Assignee List Items */
+.view-folder-lists-container ul li {
+    min-height: 38px;
+    list-style-type: none;
+    margin-bottom: 6px;
+}
+
+.view-folder-lists-container ul li:last-child {
+    margin-bottom: 0;
+}
+
+.view-folder-lists-container ul li {
+    padding: 8px 12px;
+    background: #ffffff;
+    border-radius: 6px;
+    color: #2d3748;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+}
+
+.view-folder-lists-container ul li:hover {
+    background: #edf2f7;
+    transform: translateX(4px);
+}
+
+.view-folder-lists-container ul li::before {
+    content: '';
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.view-folder-lists-container ul:empty::after {
+    content: 'No List';
+    display: block;
+    text-align: center;
+    color: #a0aec0;
+    font-size: 13px;
+    padding: 20px;
+}

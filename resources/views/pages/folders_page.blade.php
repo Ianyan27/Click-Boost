@@ -6,6 +6,22 @@
     entity="Folder"
     message="You're about to delete this folder."
 />
+<x-view-modal entity="Folder" modalId="viewMdl">
+    <div class="view-folder-name-container">
+        <label>Folder Name:</label>
+        <input id="modalFolderName" type="text" readonly>
+    </div>
+
+    <div class="view-folder-space-container">
+        <label>Space:</label>
+        <input id="modalFolderSpace" type="text" readonly>
+    </div>
+    <div class="view-folder-lists-container">
+        <label>Lists:</label>
+        <ul id="modalLists"></ul>
+    </div>
+</x-view-modal>
+
 <div class="clickup-container">
     <div class="folder-container">
         <div class="button-section-container">
@@ -33,7 +49,7 @@
                         <tr>
                             <td colspan="5">{{ $folder->name}}</td>
                             <td colspan="3" class="th-short-text">{{ $folder->space_name }}</td>
-                            <td colspan="2" class="th-numbers">{{ $folder->lists }}</td>
+                            <td colspan="2" class="th-numbers">{{ $folder->lists_count }}</td>
                             <td class="action-column" colspan="2">
                                 <div class="action-buttons">
                                     <button class="view-data-btn"
@@ -57,12 +73,45 @@
 </div>
 <script>
     let createFolderBtn = document.getElementById('createFolderBtn');
-    let createFolderModal = document.getElementById('createFolderMdl');
+    let viewFolderModal = document.getElementById('viewFolderMdl');
 
     createFolderBtn.addEventListener('click', function(){
         createFolderModal.style.display = 'block';
         createFolderBtn.style.visibility = 'hidden';
         modalStatus = true;
     })
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const modal = document.getElementById('viewMdl');
+
+    document.querySelectorAll('.view-data-btn').forEach(button => {
+        button.addEventListener('click', function () {
+
+            const folder = JSON.parse(this.dataset.folder);
+
+            // ✅ Basic info
+            document.getElementById('modalFolderName').value = folder.name;
+            document.getElementById('modalFolderSpace').value = folder.space_name;
+
+            // ✅ Lists container
+            const modalLists = document.getElementById('modalLists');
+            modalLists.innerHTML = '';
+
+            if (!folder.lists || folder.lists.length === 0) {
+                modalLists.innerHTML = '<li><em>No lists in this folder</em></li>';
+            } else {
+                folder.lists.forEach(list => {
+                    const li = document.createElement('li');
+                    li.textContent = list.name ?? 'Unknown List';
+                    modalLists.appendChild(li);
+                });
+            }
+
+            modal.style.display = 'block';
+        });
+    });
+});
 </script>
 @endsection

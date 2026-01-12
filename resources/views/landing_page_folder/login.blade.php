@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Clickup Management System Registration</title>
     <link rel="stylesheet" href="{{ asset('css/login_page.css') }}">
-    <link rel="stylesheet" href="{{ asset('js/register.js') }}">
 </head>
 <body>
     <div class="login-container" id="LoginCtn">

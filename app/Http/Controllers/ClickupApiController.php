@@ -105,77 +105,107 @@ class ClickupApiController extends Controller
     }
 
     public function getFolders(){
-
         $responseSpaces = Http::withHeaders([
             'Authorization' => env('CLICKUP_API_TOKEN'),
             'Accept' => 'application/json'
         ])->get("https://api.clickup.com/api/v2/team/9016484231/space");
 
-        $spaces = collect($responseSpaces->json()['spaces'])->map(function($space) {
+        $spaces = collect($responseSpaces->json()['spaces'])->map(function ($space) {
             return (object) [
-                'id' => $space['id'],
+                'id'   => $space['id'],
                 'name' => $space['name']
             ];
         });
 
-        // Get folders from all spaces
         $folders = $spaces->flatMap(function ($space) {
+
             $responseFolder = Http::withHeaders([
                 'Authorization' => env('CLICKUP_API_TOKEN'),
-                'Accept' => 'application/json' 
+                'Accept' => 'application/json'
             ])->get("https://api.clickup.com/api/v2/space/{$space->id}/folder");
 
-            return collect($responseFolder->json()['folders'] ?? [])->map(function($folder) use ($space) {
-                return (object) [
-                    'id' => $folder['id'],
-                    'name' => $folder['name'],
-                    'lists' => count($folder['lists'] ?? []),
-                    'space_id' => $space->id,
-                    'space_name' => $space->name
-                ];
-            });
+            return collect($responseFolder->json()['folders'] ?? [])
+                ->map(function ($folder) use ($space) {
+
+                    $lists = collect($folder['lists'] ?? [])
+                        ->map(function ($list) {
+                            return (object) [
+                                'id'   => $list['id'],
+                                'name' => $list['name']
+                            ];
+                        });
+
+                    return (object) [
+                        'id'          => $folder['id'],
+                        'name'        => $folder['name'],
+                        'lists_count' => $lists->count(),
+                        'lists'       => $lists,
+                        'space_id'    => $space->id,
+                        'space_name'  => $space->name
+                    ];
+                });
         });
 
         return view('pages.folders_page', compact('folders', 'spaces'));
     }
 
-    public function getLists(){
 
+    public function getLists(){
         $responseFolders = Http::withHeaders([
             'Authorization' => env('CLICKUP_API_TOKEN'),
             'Accept' => 'application/json'
         ])->get('https://api.clickup.com/api/v2/space/90165960030/folder');
 
-        $folders = collect($responseFolders->json()['folders'])->map(function($folder){
-            return (object) [
-                'id' => $folder['id'],
-                'name' => $folder['name']
-            ];
-        });
+        $folders = collect($responseFolders->json()['folders'] ?? [])
+            ->map(function ($folder) {
+                return (object) [
+                    'id'   => $folder['id'],
+                    'name' => $folder['name']
+                ];
+            });
 
         $lists = $folders->flatMap(function ($folder) {
+
             $responseLists = Http::withHeaders([
                 'Authorization' => env('CLICKUP_API_TOKEN'),
                 'Accept' => 'application/json'
             ])->get("https://api.clickup.com/api/v2/folder/{$folder->id}/list");
 
-            return collect($responseLists->json()['lists'] ?? [])->map(function ($list) use ($folder) {
-                return (object) [
-                    'id' => $list['id'],
-                    'name' => $list['name'],
-                    'content' => !empty($list['content']) ? $list['content'] : 'No Content.',
-                    'due_date' => date('F d, Y', $list['due_date'] / 1000),
-                    'task_count' => $list['task_count'],
-                    'folder_id' => $folder->id,
-                    'folder_name' => $folder->name
-                ];
-            });
-        });
+            return collect($responseLists->json()['lists'] ?? [])
+                ->map(function ($list) use ($folder) {
 
-        Log::info($lists);
+                    // ✅ GET TASKS UNDER THIS LIST
+                    $responseTasks = Http::withHeaders([
+                        'Authorization' => env('CLICKUP_API_TOKEN'),
+                        'Accept' => 'application/json'
+                    ])->get("https://api.clickup.com/api/v2/list/{$list['id']}/task");
+
+                    $tasks = collect($responseTasks->json()['tasks'] ?? [])
+                        ->map(function ($task) {
+                            return (object) [
+                                'id'   => $task['id'],
+                                'name' => $task['name']
+                            ];
+                        });
+
+                    return (object) [
+                        'id'           => $list['id'],
+                        'name'         => $list['name'],
+                        'content'      => !empty($list['content']) ? $list['content'] : 'No Content.',
+                        'due_date'     => isset($list['due_date'])
+                            ? date('F d, Y', $list['due_date'] / 1000)
+                            : null,
+                        'task_count'   => $tasks->count(),
+                        'tasks'        => $tasks,
+                        'folder_id'    => $folder->id,
+                        'folder_name'  => $folder->name
+                    ];
+                });
+        });
 
         return view('pages.lists_page', compact('lists', 'folders'));
     }
+
 
     public function getTasks() {
 
