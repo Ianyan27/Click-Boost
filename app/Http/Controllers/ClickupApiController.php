@@ -12,7 +12,8 @@ class ClickupApiController extends Controller
 {
 
     public function index(){
-        $response = Http::withHeaders([
+        try {
+            $response = Http::withHeaders([
             'Authorization' => env('CLICKUP_API_TOKEN'),
             'Accept' => 'application/json'
         ])->get('https://api.clickup.com/api/v2/list/901612792997/task');
@@ -70,8 +71,10 @@ class ClickupApiController extends Controller
                 ];
             })
             ->values();
-
-        return view('landing_page_folder.dashboard', compact('tasks', 'members', 'statusCounts', 'assigneeStats'));
+        return view('landing_page_folder.dashboard', compact('tasks', 'members', 'statusCounts', 'assigneeStats'));           
+        } catch (\Exception $e) {
+            return view('landing-page-folder.dashboard')->with('error', $e->getMessage());
+        }
     }
     public function getTeams(){
         $responseTeam = Http::withHeaders([
@@ -148,7 +151,6 @@ class ClickupApiController extends Controller
 
         return view('pages.folders_page', compact('folders', 'spaces'));
     }
-
 
     public function getLists(){
         $responseFolders = Http::withHeaders([
