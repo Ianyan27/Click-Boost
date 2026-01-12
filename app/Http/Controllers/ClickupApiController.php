@@ -14,64 +14,64 @@ class ClickupApiController extends Controller
     public function index(){
         try {
             $response = Http::withHeaders([
-            'Authorization' => env('CLICKUP_API_TOKEN'),
-            'Accept' => 'application/json'
-        ])->get('https://api.clickup.com/api/v2/list/901612792997/task');
+                'Authorization' => env('CLICKUP_API_TOKEN'),
+                'Accept' => 'application/json'
+            ])->get('https://api.clickup.com/api/v2/list/901612792997/task');
 
-        $tasks = collect($response->json()['tasks'])->map(function ($task){
-            return (object) [
-                'name' => $task['name'],
-                'status' => $task['status']['status'] ?? 'unknown',
-                'assignees' => collect($task['assignees'])->pluck('username')->toArray()
-            ];
-        });
-
-        $statusCounts = $tasks->pluck('status')->countBy();
-
-        $responseTeam = Http::withHeaders([
-            'Authorization' => env('CLICKUP_API_TOKEN'),
-            'Accept' => 'application/json'
-        ])->get("https://api.clickup.com/api/v2/team");
-
-        $members = collect($responseTeam->json()['teams'])
-            ->flatMap(function($team){
-                return $team['members'];
-            })
-            ->map(function($member){
+            $tasks = collect($response->json()['tasks'])->map(function ($task){
                 return (object) [
-                    'username' => $member['user']['username'],
-                    'email' => $member['user']['email']
+                    'name' => $task['name'],
+                    'status' => $task['status']['status'] ?? 'unknown',
+                    'assignees' => collect($task['assignees'])->pluck('username')->toArray()
                 ];
-            })
-            ->unique('email')
-            ->values();
+            });
 
-        // Get task statistics per assignee
-        $assigneeStats = $tasks
-            ->flatMap(function($task) {
-                // Create a row for each assignee in the task
-                return collect($task->assignees)->map(function($assignee) use ($task) {
-                    return [
-                        'assignee' => $assignee,
-                        'status' => $task->status
+            $statusCounts = $tasks->pluck('status')->countBy();
+
+            $responseTeam = Http::withHeaders([
+                'Authorization' => env('CLICKUP_API_TOKEN'),
+                'Accept' => 'application/json'
+            ])->get("https://api.clickup.com/api/v2/team");
+
+            $members = collect($responseTeam->json()['teams'])
+                ->flatMap(function($team){
+                    return $team['members'];
+                })
+                ->map(function($member){
+                    return (object) [
+                        'username' => $member['user']['username'],
+                        'email' => $member['user']['email']
                     ];
-                });
-            })
-            ->groupBy('assignee')
-            ->map(function($assigneeTasks, $assignee) {
-                $statusCounts = collect($assigneeTasks)->pluck('status')->countBy();
-                $topStatus = $statusCounts->sortDesc()->keys()->first();
-                
-                return (object) [
-                    'assignee' => $assignee,
-                    'task_count' => $assigneeTasks->count(),
-                    'top_status' => $topStatus,
-                    'top_status_count' => $statusCounts[$topStatus],
-                    'status_breakdown' => $statusCounts->toArray()
-                ];
-            })
-            ->values();
-        return view('landing_page_folder.dashboard', compact('tasks', 'members', 'statusCounts', 'assigneeStats'));           
+                })
+                ->unique('email')
+                ->values();
+
+            // Get task statistics per assignee
+            $assigneeStats = $tasks
+                ->flatMap(function($task) {
+                    // Create a row for each assignee in the task
+                    return collect($task->assignees)->map(function($assignee) use ($task) {
+                        return [
+                            'assignee' => $assignee,
+                            'status' => $task->status
+                        ];
+                    });
+                })
+                ->groupBy('assignee')
+                ->map(function($assigneeTasks, $assignee) {
+                    $statusCounts = collect($assigneeTasks)->pluck('status')->countBy();
+                    $topStatus = $statusCounts->sortDesc()->keys()->first();
+                    
+                    return (object) [
+                        'assignee' => $assignee,
+                        'task_count' => $assigneeTasks->count(),
+                        'top_status' => $topStatus,
+                        'top_status_count' => $statusCounts[$topStatus],
+                        'status_breakdown' => $statusCounts->toArray()
+                    ];
+                })
+                ->values();
+            return view('landing_page_folder.dashboard', compact('tasks', 'members', 'statusCounts', 'assigneeStats'));           
         } catch (\Exception $e) {
             return view('landing-page-folder.dashboard')->with('error', $e->getMessage());
         }
