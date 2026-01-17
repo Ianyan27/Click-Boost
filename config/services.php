@@ -35,4 +35,15 @@ return [
         ],
     ],
 
+    'clickup' => [
+        'base_url' => env('CLICKUP_BASE_URL'),
+        'token' => env('CLICKUP_API_TOKEN'),
+        'clickup' => [
+            'base_url' => env('CLICKUP_BASE_URL'),
+            'token' => env('CLICKUP_TOKEN'),
+            'list_id' => env('CLICKUP_LIST_ID'), // Members List ID: 901613065989
+            'email_field_id' => env('CLICKUP_EMAIL_FIELD_ID'),
+            'role_field_id' => env('CLICKUP_ROLE_FIELD_ID'),
+        ],
+    ]
 ];

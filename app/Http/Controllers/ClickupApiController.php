@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ClickUpService;
 use Faker\Provider\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -11,12 +12,20 @@ use Symfony\Component\CssSelector\Node\FunctionNode;
 class ClickupApiController extends Controller
 {
 
+    protected $clickup;
+
+    public function __construct(ClickUpService $clickup){
+        $this->clickup = $clickup;
+    }
+
     public function index(){
         try {
-            $response = Http::withHeaders([
-                'Authorization' => env('CLICKUP_API_TOKEN'),
-                'Accept' => 'application/json'
-            ])->get('https://api.clickup.com/api/v2/list/901612792997/task');
+            // $response = Http::withHeaders([
+            //     'Authorization' => env('CLICKUP_API_TOKEN'),
+            //     'Accept' => 'application/json'
+            // ])->get('https://api.clickup.com/api/v2/list/901612792997/task');
+
+            $response = $this->clickup->get("/list/901612792997/task");
 
             $tasks = collect($response->json()['tasks'])->map(function ($task){
                 return (object) [
@@ -207,7 +216,6 @@ class ClickupApiController extends Controller
 
         return view('pages.lists_page', compact('lists', 'folders'));
     }
-
 
     public function getTasks() {
 

@@ -1,28 +1,33 @@
 <?php
 
+use App\Http\Controllers\ClickUpAuthController;
 use App\Http\Controllers\ClickupApiController;
-use App\Http\Controllers\ClickupUserController;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 Route::get('/', function () {
     return view('landing_page_folder.login');
 });
 
-Route::prefix('user')->name('user.')->group(function () {
+Route::get('/', [
+    ClickUpAuthController::class, 'showLoginForm'
+]);
 
-    Route::post('/login', [
-        ClickupUserController::class, 'check'
-    ])->name('login');
+Route::get('/login', [ClickUpAuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [ClickUpAuthController::class, 'login'])->name('user.login');
+Route::post('/logout', [ClickUpAuthController::class, 'logout'])->name('logout');
 
-    Route::post('register', [
-        ClickupUserController::class, 'store'
-    ])->name('register');
+// Admin: Manual Sync Route
+Route::post('/admin/sync-members', [ClickUpAuthController::class, 'syncMembers'])->name('admin.sync.members');
 
-    Route::post('/logout', [
-        ClickupUserController::class, 'logout'
-    ])->name('logout');
-
+// Protected Routes
+Route::middleware(['clickup.auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        $user = Session::get('user');
+        return view('dashboard', compact('user'));
+    })->name('dashboard');
+    
+    // Add more protected routes here
 });
 
 // Clickup API Routes

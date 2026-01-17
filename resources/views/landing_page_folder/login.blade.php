@@ -27,24 +27,19 @@
                     <form action=" {{ route('user.login') }}" method="POST">
                         @csrf
                         <div class="email-container">
-                            <input type="text" placeholder="Email" name="email" required>
+                            <input type="text" placeholder="Enter your name" id="name" name="name" value="{{ old('name') }}" autofocus required>
                         </div>
                         <div class="password-container">
-                            <input type="password" placeholder="Password" name="password" required>
+                            <input type="email" placeholder="Password" id="email" name="email" value="{{ old('email') }}" autofocus required>
                         </div>
                         <div class="login-acc-btn-container">
                             <button type="submit">Login</button>
                         </div>
-                        <div class="register-btn-container">
-                            <p>Don't have an account?</p>
-                            <button id="RegisterBtn">Register</button>
-                        </div>
                     </form>
-
                 </div>
             </div>
         </div>
-        <div class="left-side" id="RegisterSide">
+        {{-- <div class="left-side" id="RegisterSide">
             <div class="left-side-inner-container">
                 <div class="label-container">
                     <h2>User Registration</h2>
@@ -74,7 +69,7 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="right-side">
             <h2>Welcome to Click Boost</h2>
             <div>
