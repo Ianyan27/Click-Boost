@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'clickup' => [
+        'base_url' => env('CLICKUP_BASE_URL'),
+        'token' => env('CLICKUP_API_TOKEN'),
+        'user_folder_id' => env('CLICKUP_USER_FOLDER_ID'),
+        'fields' => [
+            'user_email' => env('CLICKUP_EMAIL_FIELD_ID'),
+            'user_role'  => env('CLICKUP_ROLE_FIELD_ID')
+        ]
+    ]
+
 ];

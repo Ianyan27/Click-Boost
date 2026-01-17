@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ClickUpService;
 use Faker\Provider\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -11,12 +12,21 @@ use Symfony\Component\CssSelector\Node\FunctionNode;
 class ClickupApiController extends Controller
 {
 
+    protected $clickup;
+    protected $userFolderId;
+
+    public function __construct(ClickUpService $clickup){
+        $this->clickup = $clickup;
+        $this->userFolderId = config('services.clickup.user_folder_id');
+    }
+
+    public function loadLoginPage(){
+        return view('landing_page_folder.login');
+    }
+
     public function index(){
         try {
-            $response = Http::withHeaders([
-                'Authorization' => env('CLICKUP_API_TOKEN'),
-                'Accept' => 'application/json'
-            ])->get('https://api.clickup.com/api/v2/list/901612792997/task');
+            $response = $this->clickup->get("/list/901612792997/task");
 
             $tasks = collect($response->json()['tasks'])->map(function ($task){
                 return (object) [
@@ -28,10 +38,7 @@ class ClickupApiController extends Controller
 
             $statusCounts = $tasks->pluck('status')->countBy();
 
-            $responseTeam = Http::withHeaders([
-                'Authorization' => env('CLICKUP_API_TOKEN'),
-                'Accept' => 'application/json'
-            ])->get("https://api.clickup.com/api/v2/team");
+            $responseTeam = $this->clickup->getTeams();
 
             $members = collect($responseTeam->json()['teams'])
                 ->flatMap(function($team){
@@ -77,10 +84,7 @@ class ClickupApiController extends Controller
         }
     }
     public function getTeams(){
-        $responseTeam = Http::withHeaders([
-            'Authorization' => env('CLICKUP_API_TOKEN'),
-            'Accept' => 'application/json'
-        ])->get("https://api.clickup.com/api/v2/team");
+        $responseTeam = $this->clickup->getTeams();
 
         $teams = collect($responseTeam->json()['teams'])->map(function($team){
             return (object) [
@@ -91,10 +95,7 @@ class ClickupApiController extends Controller
 
         $teamId = collect($teams)->pluck('id')->first();
 
-        $responseSpaces = Http::withHeaders([
-            'Authorization' => env('CLICKUP_API_TOKEN'),
-            'Accept' => 'application/json'
-        ])->get("https://api.clickup.com/api/v2/team/{$teamId}/space");
+        $responseSpaces = $this->clickup->get("/team/{$teamId}/space");
 
         $spaces = collect($responseSpaces->json()['spaces'])->map(function($space){
             return (object) [
@@ -108,10 +109,8 @@ class ClickupApiController extends Controller
     }
 
     public function getFolders(){
-        $responseSpaces = Http::withHeaders([
-            'Authorization' => env('CLICKUP_API_TOKEN'),
-            'Accept' => 'application/json'
-        ])->get("https://api.clickup.com/api/v2/team/9016484231/space");
+
+        $responseSpaces = $this->clickup->get("/team/9016484231/space");
 
         $spaces = collect($responseSpaces->json()['spaces'])->map(function ($space) {
             return (object) [
@@ -122,10 +121,7 @@ class ClickupApiController extends Controller
 
         $folders = $spaces->flatMap(function ($space) {
 
-            $responseFolder = Http::withHeaders([
-                'Authorization' => env('CLICKUP_API_TOKEN'),
-                'Accept' => 'application/json'
-            ])->get("https://api.clickup.com/api/v2/space/{$space->id}/folder");
+            $responseFolder = $this->clickup->get("/space/{$space->id}/folder");
 
             return collect($responseFolder->json()['folders'] ?? [])
                 ->map(function ($folder) use ($space) {
@@ -153,10 +149,8 @@ class ClickupApiController extends Controller
     }
 
     public function getLists(){
-        $responseFolders = Http::withHeaders([
-            'Authorization' => env('CLICKUP_API_TOKEN'),
-            'Accept' => 'application/json'
-        ])->get('https://api.clickup.com/api/v2/space/90165960030/folder');
+
+        $responseFolders = $this->clickup->get("/space/90165960030/folder");
 
         $folders = collect($responseFolders->json()['folders'] ?? [])
             ->map(function ($folder) {
@@ -168,19 +162,13 @@ class ClickupApiController extends Controller
 
         $lists = $folders->flatMap(function ($folder) {
 
-            $responseLists = Http::withHeaders([
-                'Authorization' => env('CLICKUP_API_TOKEN'),
-                'Accept' => 'application/json'
-            ])->get("https://api.clickup.com/api/v2/folder/{$folder->id}/list");
+            $responseLists = $this->clickup->get("/folder/{$folder->id}/list");
 
             return collect($responseLists->json()['lists'] ?? [])
                 ->map(function ($list) use ($folder) {
 
                     // ✅ GET TASKS UNDER THIS LIST
-                    $responseTasks = Http::withHeaders([
-                        'Authorization' => env('CLICKUP_API_TOKEN'),
-                        'Accept' => 'application/json'
-                    ])->get("https://api.clickup.com/api/v2/list/{$list['id']}/task");
+                    $responseTasks = $this->clickup->get("/list/{$list['id']}/task");
 
                     $tasks = collect($responseTasks->json()['tasks'] ?? [])
                         ->map(function ($task) {
