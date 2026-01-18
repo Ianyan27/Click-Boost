@@ -6,9 +6,9 @@ use App\Http\Controllers\ClickupUserController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [
-    ClickupAPIController::class, 'loadLoginPage'
-]);
+Route::get('/', function () {
+    return view('landing_page_folder.login');
+})->name('login');
 
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);

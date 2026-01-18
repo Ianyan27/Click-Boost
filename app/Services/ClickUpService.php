@@ -138,40 +138,92 @@ class ClickUpService {
     }
 
     public function getMemberLists(){
-        return $this->request()->get($this->baseUrl . "/list/{$this->listId}/task");
+        try {
+            $response = $this->request()->get("https://api.clickup.com/api/v2/list/{$this->listId}/task");
+            if($response->successful()){
+                $data = $response->json();
+                return $data['tasks'];
+            }
+        } catch (\Exception $e) {
+            Log::error('[getTasks] Exception occurred', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return [];
+        }
     }
 
-    public function findUserByEmail($email) {
+    public function findUserByEmail($email)
+    {
+        Log::info('[findUserByEmail] Started search', ['search_email' => $email]);
+        
         $tasks = $this->getMemberLists();
+        
+        Log::info('[findUserByEmail] Tasks retrieved', ['task_count' => count($tasks)]);
+
+        if (empty($tasks)) {
+            Log::warning('[findUserByEmail] No tasks found in ClickUp list');
+            return null;
+        }
 
         foreach ($tasks as $task) {
-            $customFields = $task['custom_fields'] ?? [];
-            
-            foreach ($customFields as $field) {
-                if (strtolower($field['name']) === 'user email') {
-                    $taskEmail = $field['value'] ?? null;
-                    
-                    if (strtolower($taskEmail) === strtolower($email)) {
-                        // Extract role
-                        $role = null;
-                        foreach ($customFields as $roleField) {
-                            if (strtolower($roleField['name']) === 'role') {
-                                $role = $roleField['value'] ?? null;
-                                break;
-                            }
-                        }
+            if (!is_array($task)) {
+                Log::warning('[findUserByEmail] Invalid task format', ['task' => $task]);
+                continue;
+            }
 
-                        return [
-                            'name' => $task['name'],
-                            'email' => $taskEmail,
-                            'role' => $role,
-                            'task_id' => $task['id'],
-                        ];
-                    }
+            $customFields = $task['custom_fields'] ?? [];
+            Log::info('[findUserByEmail] Checking task', [
+                'task_name' => $task['name'] ?? 'N/A',
+                'custom_fields_count' => count($customFields)
+            ]);
+            
+            $taskEmail = null;
+            $role = null;
+
+            foreach ($customFields as $field) {
+                if (!is_array($field)) {
+                    continue;
                 }
+
+                $fieldName = strtolower($field['name'] ?? '');
+                
+                // Check for User Email field
+                if ($fieldName === 'user email' || $fieldName === 'email') {
+                    $taskEmail = $field['value'] ?? null;
+                    Log::info('[findUserByEmail] Found email field', [
+                        'field_name' => $field['name'],
+                        'email_value' => $taskEmail
+                    ]);
+                }
+                
+                // Check for Role field
+                if ($fieldName === 'role') {
+                    $role = $field['value'] ?? null;
+                    Log::info('[findUserByEmail] Found role field', [
+                        'role_value' => $role
+                    ]);
+                }
+            }
+
+            // If we found an email that matches
+            if ($taskEmail && strtolower($taskEmail) === strtolower($email)) {
+                Log::info('[findUserByEmail] Match found!', [
+                    'task_name' => $task['name'],
+                    'email' => $taskEmail,
+                    'role' => $role
+                ]);
+
+                return [
+                    'name' => $task['name'],
+                    'email' => $taskEmail,
+                    'role' => $role,
+                    'task_id' => $task['id'],
+                ];
             }
         }
 
+        Log::warning('[findUserByEmail] No matching user found', ['email' => $email]);
         return null;
     }
 }

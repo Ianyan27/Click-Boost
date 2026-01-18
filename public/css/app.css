@@ -69,6 +69,12 @@ body {
     justify-content: center;
 }
 
+.user-name img {
+    height: 35px;
+    border: 1px solid white;
+    border-radius: 50%;
+}
+
 .header .user-account .fa-user {
     width: 20px;
     height: 25px;
