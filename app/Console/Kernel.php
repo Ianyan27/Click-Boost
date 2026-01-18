@@ -9,15 +9,12 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule)
     {
-        // Run every hour
         $schedule->command('clickup:sync-users')->hourly();
-        
-        // OR run daily at 2am
-        // $schedule->command('clickup:sync-users')->dailyAt('02:00');
-        
-        // OR run every 6 hours
-        // $schedule->command('clickup:sync-users')->everySixHours();
     }
+
+    protected $middlewareAliases = [
+        'auth.clickup' => \App\Http\Middleware\CheckClickUpAuth::class,
+    ];
 
     protected function commands()
     {

@@ -43,6 +43,11 @@ return [
             'user_email' => env('CLICKUP_EMAIL_FIELD_ID'),
             'user_role'  => env('CLICKUP_ROLE_FIELD_ID')
         ]
-    ]
+    ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI')
+    ],
 ];

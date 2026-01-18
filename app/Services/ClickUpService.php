@@ -14,10 +14,13 @@ class ClickUpService {
 
     protected string $userFolderId;
 
+    protected string $listId;
+
     public function __construct() {
         $this->baseUrl = config('services.clickup.base_url');
         $this->token = config('services.clickup.token');
         $this->userFolderId = config('services.clickup.user_folder_id');
+        $this->listId = config('services.clickup.user_folder_id');
     }
 
     protected function request(): PendingRequest {
@@ -132,5 +135,43 @@ class ClickUpService {
         }
 
         Log::info('User folder sync completed');
+    }
+
+    public function getMemberLists(){
+        return $this->request()->get($this->baseUrl . "/list/{$this->listId}/task");
+    }
+
+    public function findUserByEmail($email) {
+        $tasks = $this->getMemberLists();
+
+        foreach ($tasks as $task) {
+            $customFields = $task['custom_fields'] ?? [];
+            
+            foreach ($customFields as $field) {
+                if (strtolower($field['name']) === 'user email') {
+                    $taskEmail = $field['value'] ?? null;
+                    
+                    if (strtolower($taskEmail) === strtolower($email)) {
+                        // Extract role
+                        $role = null;
+                        foreach ($customFields as $roleField) {
+                            if (strtolower($roleField['name']) === 'role') {
+                                $role = $roleField['value'] ?? null;
+                                break;
+                            }
+                        }
+
+                        return [
+                            'name' => $task['name'],
+                            'email' => $taskEmail,
+                            'role' => $role,
+                            'task_id' => $task['id'],
+                        ];
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }
