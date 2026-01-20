@@ -43,9 +43,7 @@
                                         data-space= '@json($space)'>
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
-                                    <button class="edit-space-btn"
-                                        data-space-id ="{{ $space->id }}"
-                                        data-space-name="{{ $space->name }}">
+                                    <button>
                                         <i class="fa-solid fa-pencil"></i>
                                     </button>
                                     <button class="delete-btn" data-entity="space" data-id="{{ $space->id }}" data-name="{{ $space->name }}">
@@ -85,40 +83,5 @@
             })
         })
     })
-    $(document).on('click', '.edit-space-btn', function() {
-        const spaceId = $(this).data('space-id');
-        const spaceName = $(this).data('space-name');
-        
-        $('#editSpaceName').val(spaceName);
-        $('#editSpaceMdl form').attr('action', `/spaces/${spaceId}`);
-        $('#editSpaceMdl').modal('show');
-    });
-
-    // Handle form submission
-    $('#editSpaceMdl form').on('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = {
-            name: $('#editSpaceName').val(),
-            _token: $('meta[name="csrf-token"]').attr('content')
-        };
-        
-        $.ajax({
-            url: $(this).attr('action'),
-            method: 'PUT',
-            data: formData,
-            success: function(response) {
-                $('#editSpaceMdl').modal('hide');
-                // Show success message
-                // Refresh table or update row
-            },
-            error: function(xhr) {
-                // Show validation errors
-                if (xhr.responseJSON.errors) {
-                    $('#editSpaceNameError').text(xhr.responseJSON.errors.name[0]);
-                }
-            }
-        });
-    });
 </script>
 @endsection

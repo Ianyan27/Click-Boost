@@ -430,10 +430,6 @@ class ClickupApiController extends Controller
         return redirect()->back()->with('success', 'Task successfully created in ClickUp!');
     }
 
-    public function updateSpace(){
-        
-    }
-
     public function delete(Request $request){
         
         $request->validate([
