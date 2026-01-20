@@ -75,6 +75,10 @@ Route::prefix('clickup')->name('clickup.')->group(function (){
         ClickupApiController::class, 'createTask'
     ])->name('task.create');
 
+    Route::put('/spaces/{id}', [
+        ClickupApiController::class, 'updateSpace'
+    ])->name('spaces.update');
+
     Route::delete('/clickup/delete', [
         ClickupAPiController::class, 'delete'
     ])->name('delete');

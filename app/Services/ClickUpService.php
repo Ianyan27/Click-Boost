@@ -39,6 +39,60 @@ class ClickUpService {
         return $this->request()->post($this->baseUrl . $endpoint, $data);
     }
 
+    public function put($endpoint, array $data){
+        return $this->request()->put($this->baseUrl . $endpoint, $data);
+    }
+
+    public function updateSpace(string $spaceId, string $name){
+        return $this->request()->put($this->baseUrl . "/space/{$spaceId}", [
+            'name' => $name
+        ]);
+    }
+
+    public function updateFolder(string $folderId, string $name) {
+        return $this->request()->put($this->baseUrl .  "/folder/{$folderId}", [
+            'name' => $name
+        ]);
+    }
+
+    public function updateList(string $listId, ?string $name = null, ?int $dueDate = null){
+        $data = array_filter([
+            'name' => $name,
+            'due_date' => $dueDate
+        ], fn($value) => $value !== null);
+
+        return $this->request()->put($this->baseUrl . "/list/{$listId}", $data);
+    }
+
+    public function updateTask(string $taskId, array $data){
+        $payload = [];
+
+        if (isset($data['name'])) {
+            $payload['name'] = $data['name'];
+        }
+
+        if (isset($data['description'])) {
+            $payload['description'] = $data['description'];
+        }
+
+        if (isset($data['due_date'])) {
+            $payload['due_date'] = $data['due_date']; // Unix timestamp in milliseconds
+        }
+
+        if (isset($data['status'])) {
+            $payload['status'] = $data['status'];
+        }
+
+        if (isset($data['assignees'])) {
+            $payload['assignees'] = [
+                'add' => $data['assignees']['add'] ?? [],
+                'rem' => $data['assignees']['rem'] ?? []
+            ];
+        }
+
+        return $this->request()->put("{$this->baseUrl}/task/{$taskId}", $payload);
+    }
+
     public function getTeams() {
         return $this->request()->get($this->baseUrl . "/team");
     }
