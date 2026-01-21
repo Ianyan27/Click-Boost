@@ -24,8 +24,28 @@
             </div>
             <div class="assignees-data-cards">
                 @foreach ($assigneeStats as $stats)
-                    <div class="assignee-card">
-                        <span class="assignee-name">{{ $stats->assignee }}</span>
+                    @php
+                        // Determine workload status based on task count
+                        if ($stats->task_count >= 5) {
+                            $workloadClass = 'workload-overloaded';
+                            $workloadLabel = 'Overloaded';
+                        } elseif ($stats->task_count >= 3) {
+                            $workloadClass = 'workload-busy';
+                            $workloadLabel = 'Busy';
+                        } elseif ($stats->task_count >= 1) {
+                            $workloadClass = 'workload-available';
+                            $workloadLabel = 'Available';
+                        } else {
+                            $workloadClass = 'workload-idle';
+                            $workloadLabel = 'Idle';
+                        }
+                    @endphp
+
+                    <div class="assignee-card {{ $workloadClass }}">
+                        <div class="assignee-header">
+                            <span class="assignee-name">{{ $stats->assignee ?: $stats->email }}</span>
+                            <span class="workload-badge {{ $workloadClass }}">{{ $workloadLabel }}</span>
+                        </div>
                         <div class="assignee-stats">
                             <div class="stat-item">
                                 <span class="stat-label">Total Tasks</span>
@@ -34,7 +54,7 @@
                             <div class="stat-item">
                                 <span class="stat-label">Top Status</span>
                                 <div class="top-status-badge">
-                                    <span class="top-status-name" {{ strtolower(str_replace(' ', '-', $stats->top_status)) }}>
+                                    <span class="top-status-name {{ strtolower(str_replace(' ', '-', $stats->top_status)) }}">
                                         {{ $stats->top_status }}
                                     </span>
                                     <span class="top-status-count">{{ $stats->top_status_count }}</span>

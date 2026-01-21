@@ -65,12 +65,16 @@ class ClickupApiController extends Controller
                     });
                 })
                 ->groupBy('assignee')
-                ->map(function($assigneeTasks, $assignee) {
+                ->map(function($assigneeTasks, $assignee) use ($members) {
                     $statusCounts = collect($assigneeTasks)->pluck('status')->countBy();
                     $topStatus = $statusCounts->sortDesc()->keys()->first();
                     
+                    // Find the member to get their email
+                    $member = $members->firstWhere('username', $assignee);
+                    
                     return (object) [
                         'assignee' => $assignee,
+                        'email' => $member->email ?? null,
                         'task_count' => $assigneeTasks->count(),
                         'top_status' => $topStatus,
                         'top_status_count' => $statusCounts[$topStatus],
@@ -78,6 +82,9 @@ class ClickupApiController extends Controller
                     ];
                 })
                 ->values();
+
+                Log::info('Assignee Stats:', $assigneeStats->toArray());
+                
             return view('landing_page_folder.dashboard', compact('tasks', 'members', 'statusCounts', 'assigneeStats'));           
         } catch (\Exception $e) {
             return view('landing-page-folder.dashboard')->with('error', $e->getMessage());

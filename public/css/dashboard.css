@@ -185,6 +185,126 @@
     font-weight: 600;
 }
 
+/* Workload Color Schemes */
+.assignee-card.workload-overloaded {
+    border-left-color: #dc2626;
+    background: linear-gradient(135deg, #fff 0%, #fef2f2 100%);
+}
+
+.assignee-card.workload-busy {
+    border-left-color: #f59e0b;
+    background: linear-gradient(135deg, #fff 0%, #fffbeb 100%);
+}
+
+.assignee-card.workload-available {
+    border-left-color: #10b981;
+    background: linear-gradient(135deg, #fff 0%, #f0fdf4 100%);
+}
+
+.assignee-card.workload-idle {
+    border-left-color: #9ca3af;
+    background: linear-gradient(135deg, #fff 0%, #f9fafb 100%);
+}
+
+.assignee-card:hover {
+    transform: translateX(4px);
+}
+
+.assignee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.assignee-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.workload-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.workload-badge.workload-overloaded {
+    background-color: #dc2626;
+    color: white;
+}
+
+.workload-badge.workload-busy {
+    background-color: #f59e0b;
+    color: white;
+}
+
+.workload-badge.workload-available {
+    background-color: #10b981;
+    color: white;
+}
+
+.workload-badge.workload-idle {
+    background-color: #9ca3af;
+    color: white;
+}
+
+.assignee-stats {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #6c757d;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #193e6b;
+}
+
+.top-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.top-status-name {
+    color: #2c3e50;
+}
+
+.top-status-count {
+    background: #193e6b;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 @media (max-width: 1200px) {
     .second-section {
         grid-template-columns: 1fr;
