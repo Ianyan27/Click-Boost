@@ -9,6 +9,8 @@
     <link rel="stylesheet" href=" {{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href=" {{ asset('css/clickup_contents.css') }} ">
     <link rel="stylesheet" href=" {{ asset('css/statuses/statuses.css') }} ">
+    <link rel="stylesheet" href=" {{ asset('css/toast/toast.css') }}">
+    <script defer src="{{ asset('js/toast/toast.js') }}"></script>
 </head>
 <body>
     <div class="header">
@@ -63,7 +65,7 @@
                     </a>
                 </li>
                 <li>
-                    <form action=" {{ route('user.logout') }} " method="POST">
+                    <form action=" {{ route('logout') }} " method="POST">
                         @csrf
                         <button class="logout-btn" type="submit">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span>
@@ -74,6 +76,9 @@
         </div>
         <div class="content">
             @yield('content')
+            @if(session('success'))
+                <div class="toast" id="toast">{{ session('success') }}</div>
+            @endif
         </div>
     </div>
     <script src="https://kit.fontawesome.com/4d2a01d4ef.js" crossorigin="anonymous"></script>

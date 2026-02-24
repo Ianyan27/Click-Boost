@@ -8,7 +8,7 @@
         <h3 id="deleteTitle">Delete</h3>
     </div>
 
-    <form method="POST" action="{{ route('clickup.delete') }}" id="deleteForm">
+    <form method="POST" action="{{ route("clickup.delete", ["id" => 0]) }}" id="deleteForm">
         @csrf
         @method('DELETE')
 

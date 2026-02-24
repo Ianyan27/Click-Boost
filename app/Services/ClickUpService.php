@@ -209,11 +209,8 @@ class ClickUpService {
 
     public function findUserByEmail($email)
     {
-        Log::info('[findUserByEmail] Started search', ['search_email' => $email]);
         
         $tasks = $this->getMemberLists();
-        
-        Log::info('[findUserByEmail] Tasks retrieved', ['task_count' => count($tasks)]);
 
         if (empty($tasks)) {
             Log::warning('[findUserByEmail] No tasks found in ClickUp list');
@@ -227,10 +224,6 @@ class ClickUpService {
             }
 
             $customFields = $task['custom_fields'] ?? [];
-            Log::info('[findUserByEmail] Checking task', [
-                'task_name' => $task['name'] ?? 'N/A',
-                'custom_fields_count' => count($customFields)
-            ]);
             
             $taskEmail = null;
             $role = null;
@@ -245,28 +238,16 @@ class ClickUpService {
                 // Check for User Email field
                 if ($fieldName === 'user email' || $fieldName === 'email') {
                     $taskEmail = $field['value'] ?? null;
-                    Log::info('[findUserByEmail] Found email field', [
-                        'field_name' => $field['name'],
-                        'email_value' => $taskEmail
-                    ]);
                 }
                 
                 // Check for Role field
                 if ($fieldName === 'role') {
                     $role = $field['value'] ?? null;
-                    Log::info('[findUserByEmail] Found role field', [
-                        'role_value' => $role
-                    ]);
                 }
             }
 
             // If we found an email that matches
             if ($taskEmail && strtolower($taskEmail) === strtolower($email)) {
-                Log::info('[findUserByEmail] Match found!', [
-                    'task_name' => $task['name'],
-                    'email' => $taskEmail,
-                    'role' => $role
-                ]);
 
                 return [
                     'name' => $task['name'],

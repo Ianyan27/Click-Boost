@@ -28,12 +28,6 @@ class AuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
 
-            Log::info('[GoogleCallback] Google user retrieved', [
-                'google_id' => $googleUser->getId(),
-                'email' => $googleUser->getEmail(),
-                'name' => $googleUser->getName(),
-            ]);
-
             $email = $googleUser->getEmail();
 
             if (!$email) {
@@ -43,19 +37,9 @@ class AuthController extends Controller
                     ->with('error', 'No email received from Google account.');
             }
 
-            // Check if user exists in ClickUp
-            Log::info('[GoogleCallback] Checking ClickUp user by email', [
-                'email' => $email
-            ]);
-
             $clickUpUser = $this->clickUpService->findUserByEmail($email);
 
             if ($clickUpUser) {
-                Log::info('[GoogleCallback] ClickUp user authorized', [
-                    'task_id' => $clickUpUser['task_id'],
-                    'email' => $clickUpUser['email'],
-                    'role' => $clickUpUser['role']
-                ]);
 
                 // Store user info in session
                 session([

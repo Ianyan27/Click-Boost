@@ -315,12 +315,12 @@ input[readonly] {
 
 .create-task-assignees-container ul,
 .view-task-assignees-container ul {
-    max-height: 120px;
+    max-height: 40px;
     overflow-y: auto;
     background-color: #f7fafc;
     border: 2px solid #e2e8f0;
     border-radius: 8px;
-    padding: 6px;
+    padding: 0 6px;
 }
 
 /* Custom Scrollbar */

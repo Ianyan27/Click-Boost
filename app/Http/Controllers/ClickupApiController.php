@@ -203,7 +203,6 @@ class ClickupApiController extends Controller
         return view('pages.lists_page', compact('lists', 'folders'));
     }
 
-
     public function getTasks() {
 
         $responseTeam = Http::withHeaders([
@@ -313,9 +312,9 @@ class ClickupApiController extends Controller
 
         Log::info($response);
 
-        if($response->Failed()){
+        if($response->failed()){
             Log::info($response);
-            return back()->withErrors(['clickup_error' => 'Failed to create task in ClickUp.']);
+            return back()->withErrors(['clickup_error' => 'Failed to create space in ClickUp.']);
         }
 
         return redirect()->back()->with('success', 'Space successfully created in ClickUp!');
@@ -410,7 +409,6 @@ class ClickupApiController extends Controller
             'assignees' => $assignees
         ]);
 
-
         $response = Http::withHeaders([
                 'Authorization' => $token,
                 'Accept' => 'application/json',
@@ -435,6 +433,32 @@ class ClickupApiController extends Controller
         }
 
         return redirect()->back()->with('success', 'Task successfully created in ClickUp!');
+    }
+
+    public function updateSpace(Request $request, $id){
+        
+        $token = env('CLICKUP_API_TOKEN');
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
+
+        $response = Http::withHeaders([
+            'Authorization' => $token,
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json'
+        ])->put("https://api.clickup.com/api/v2/space/{$id}", [
+            'name' => $validated['name']
+        ]);
+
+        Log::info($response);
+
+        if($response->Failed()){
+            Log::info($response);
+            return back()->withErrors(['clickup_error' => 'Failed to update space in ClickUp.']);
+        }
+
+        return redirect()->back()->with('success', 'Space successfully updated in ClickUp!');
     }
 
     public function delete(Request $request){

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@extends('layouts.modal.folder-modal')
+@extends('layouts.modal.create-modal.create-folder-modal')
 
 @section('content')
 <x-delete-modal 
@@ -73,6 +73,7 @@
 </div>
 <script>
     let createFolderBtn = document.getElementById('createFolderBtn');
+    let createFolderModal = document.getElementById('createFolderMdl');
     let viewFolderModal = document.getElementById('viewFolderMdl');
 
     createFolderBtn.addEventListener('click', function(){

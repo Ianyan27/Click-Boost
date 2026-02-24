@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@extends('layouts.modal.space-modal')
+@extends('layouts.modal.create-modal.create-space-modal')
 @extends('layouts.modal.view-data-modal.view-space-modal')
 
 @section('content')
@@ -59,17 +59,16 @@
     </div>
 </div>
 <script>
-    let createSpaceBtn = document.getElementById('createSpaceBtn');
-    let createSpaceModal = document.getElementById('createSpaceMdl');
-
-    createSpaceBtn.addEventListener('click', function(){
-        createSpaceModal.style.display = 'block';
-        createSpaceBtn.style.visibility = 'hidden';
-        modalStatus = true;
-    })
-</script>
-<script>
     document.addEventListener('DOMContentLoaded', function () {
+
+        let createSpaceBtn = document.getElementById('createSpaceBtn');
+        let createSpaceModal = document.getElementById('createSpaceMdl');
+
+        createSpaceBtn.addEventListener('click', function(){
+            createSpaceModal.style.display = 'block';
+            createSpaceBtn.style.visibility = 'hidden';
+            modalStatus = true;
+        });
         
         const modal = document.getElementById('viewMdl');
 
@@ -82,6 +81,18 @@
                 modal.style.display = 'block';
             })
         })
-    })
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.dataset.id;
+            const name = btn.dataset.name;
+
+            const form = document.getElementById('deleteForm');
+            form.action = '{{ route("clickup.delete", ["id" => "__ID__"]) }}'.replace('__ID__', id);
+            document.getElementById('deleteMessage').textContent = `You're about to delete "${name}".`;
+            document.getElementById('deleteMdl').style.display = 'block';
+        });
+    });
 </script>
 @endsection

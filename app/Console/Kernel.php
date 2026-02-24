@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Http\Middleware\AuthClickup;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,7 @@ class Kernel extends ConsoleKernel
     }
 
     protected $middlewareAliases = [
-        'auth.clickup' => \App\Http\Middleware\CheckClickUpAuth::class,
+        'auth.clickup' => AuthClickup::class,
     ];
 
     protected function commands()

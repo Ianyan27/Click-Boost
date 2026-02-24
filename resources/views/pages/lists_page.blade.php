@@ -4,7 +4,7 @@
 @section('content')
 <x-delete-modal 
     entity="List"
-    message="You're about to delete this List."
+    message="You're about to delete this list."
 />
 <x-view-modal entity="List" modalId="viewMdl">
     <div class="view-folder-name-container">
@@ -28,7 +28,6 @@
         <ul id="modalTasks"></ul>
     </div>
 </x-view-modal>
-
 <div class="clickup-container">
     <div class="list-container">
         <div class="button-section-container">
