@@ -67,6 +67,18 @@ Route::middleware('auth.clickup')->group(function () {
             ClickupApiController::class, 'updateSpace'
         ])->name('spaces.update');
 
+        Route::put('folders/{id}', [
+            ClickupApiController::class, 'updateFolder'
+        ])->name('folders.update');
+
+        Route::put('lists/{id}' , [
+            ClickupApiController::class, 'updateList'
+        ])->name('lists.update');
+
+        Route::put('tasks/{id}', [
+            ClickupApiController::class, 'updateTask'
+        ])->name('tasks.update');
+
         // Delete
         Route::delete('delete/{id}', [
             ClickupApiController::class, 'delete'

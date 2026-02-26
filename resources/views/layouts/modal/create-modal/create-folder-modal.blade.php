@@ -28,7 +28,7 @@
             </div>
             <div class="submit-btn-ctn">
                 <button type="submit" id="closeModal">
-                    Create Task
+                    Create Folder
                 </button>
             </div>
         </form>

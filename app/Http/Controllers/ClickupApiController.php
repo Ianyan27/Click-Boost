@@ -20,10 +20,6 @@ class ClickupApiController extends Controller
         $this->userFolderId = config('services.clickup.user_folder_id');
     }
 
-    public function loadLoginPage(){
-        return view('landing_page_folder.login');
-    }
-
     public function index(){
         try {
             $response = $this->clickup->get("/list/901612792997/task");
@@ -253,7 +249,7 @@ class ClickupApiController extends Controller
                         return (object) [
                             'id'      => $assignee['id'],
                             'username'=> $assignee['username'],
-                            'emai'    => $assignee['email']
+                            'email'    => $assignee['email']
                         ];
                     })->values(),
                     'list_id'         => $list->id,
@@ -436,20 +432,12 @@ class ClickupApiController extends Controller
     }
 
     public function updateSpace(Request $request, $id){
-        
-        $token = env('CLICKUP_API_TOKEN');
 
         $validated = $request->validate([
             'name' => 'required|string|max:255'
         ]);
 
-        $response = Http::withHeaders([
-            'Authorization' => $token,
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json'
-        ])->put("https://api.clickup.com/api/v2/space/{$id}", [
-            'name' => $validated['name']
-        ]);
+        $response = $this->clickup->updateSpace($id, $validated['name']);
 
         Log::info($response);
 
@@ -459,6 +447,79 @@ class ClickupApiController extends Controller
         }
 
         return redirect()->back()->with('success', 'Space successfully updated in ClickUp!');
+    }
+
+    public function updateFolder(Request $request, $id){
+        $validated = $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
+
+        $response = $this->clickup->updateFolder($id, $validated['name']);
+
+        if($response->Failed()){
+            Log::info($response);
+            return back()->withErrors(['clickup_error' => 'Failed to update folder in ClickUp.']);
+        }
+
+        return redirect()->back()->with('success', 'Folder successfully updated in ClickUp!');
+    }
+
+    public function updateList(Request $request, $id){
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'due_date' => 'nullable|string'
+        ]);
+
+        $response = $this->clickup->updateList(
+            $id, 
+            $validated['name'], 
+            $validated['due_date'] ? strtotime($validated['due_date']) * 1000 : null
+        );
+
+        if($response->Failed()){
+            Log::info($response);
+            return back()->withErrors(['clickup_error' => 'Failed to update folder in ClickUp.']);
+        }
+
+        return redirect()->back()->with('success', 'List successfully updated in ClickUp!');
+
+    }
+
+    public function updateTask(Request $request, $id){
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'due_date' => 'nullable|string',
+            'status' => 'nullable|string',
+            'assignees' => 'nullable|array',
+            'assignees.*' => 'string',
+            'new_assignees' => 'nullable|array',
+            'new_assignees.*' => 'string',
+            'original_assignees' => 'nullable|string', // we'll pass original IDs as JSON
+        ]);
+
+        $keptAssignees = $validated['assignees'] ?? [];
+        $newAssignees = $validated['new_assignees'] ?? [];
+        $originalAssignees = json_decode($validated['original_assignees'] ?? '[]', true);
+
+        // Removed = those in original but not in kept
+        $removedAssignees = array_values(array_diff($originalAssignees, $keptAssignees));
+
+        $response = $this->clickup->updateTask($id, [
+            'name'      => $validated['name'],
+            'due_date'  => $validated['due_date'] ? strtotime($validated['due_date']) * 1000 : null,
+            'status'    => $validated['status'] ?? null,
+            'assignees' => [
+                'add' => array_map('intval', array_merge($newAssignees)),
+                'rem' => array_map('intval', $removedAssignees),
+            ],
+        ]);
+
+        if($response->Failed()){
+            Log::info($response);
+            return back()->withErrors(['clickup_error' => 'Failed to update task in ClickUp.']);
+        }
+
+        return redirect()->back()->with('success', 'Task successfully updated in ClickUp!');
     }
 
     public function delete(Request $request){

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href=" {{ asset('css/statuses/statuses.css') }} ">
     <link rel="stylesheet" href=" {{ asset('css/toast/toast.css') }}">
     <script defer src="{{ asset('js/toast/toast.js') }}"></script>
+    @stack('styles')
 </head>
 <body>
     <div class="header">

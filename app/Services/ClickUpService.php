@@ -71,10 +71,6 @@ class ClickUpService {
             $payload['name'] = $data['name'];
         }
 
-        if (isset($data['description'])) {
-            $payload['description'] = $data['description'];
-        }
-
         if (isset($data['due_date'])) {
             $payload['due_date'] = $data['due_date']; // Unix timestamp in milliseconds
         }
