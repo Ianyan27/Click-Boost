@@ -258,9 +258,11 @@ class ClickupApiController extends Controller
             });
         });
 
+        $taskCounts = collect($tasks)->flatMap(fn($task) => $task->assignees)->groupBy('id')->map(fn($group) => $group->count());
+
         $taskStatuses = collect($tasks)->pluck('status')->unique()->sort()->values();
 
-        return view('pages.tasks_page', compact('tasks', 'lists', 'members', 'taskStatuses'));
+        return view('pages.tasks_page', compact('tasks', 'lists', 'members', 'taskStatuses', 'taskCounts'));
     }
 
     public function getMembers(){
@@ -390,7 +392,8 @@ class ClickupApiController extends Controller
             'description'   => 'nullable|string',
             'due_date'      => 'nullable|string',
             'status'        => 'required|string',
-            'assignees'     => 'nullable|array'
+            'assignees'     => 'nullable|array',
+            'priority'      => 'required|integer',
         ]);
 
         $listId = $validated['list'];
@@ -414,7 +417,8 @@ class ClickupApiController extends Controller
             'description' => $validated['description'],
             'status' => $validated['status'],
             'due_date' => $duedate,
-            'assignees' => $assignees       
+            'assignees' => $assignees,
+            'priority' => $validated['priority']       
         ]);
 
         Log::info('ClickUp response', [

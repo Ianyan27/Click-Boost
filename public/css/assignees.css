@@ -20,6 +20,7 @@
 }
 
 .assignee-card {
+    height: 175px;
     background: white;
     border-radius: 12px;
     padding: 1.5rem;

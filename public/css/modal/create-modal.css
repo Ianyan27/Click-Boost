@@ -1,133 +1,6 @@
-/* .create-modal,
-.view-modal {
-display: none;
-position: fixed;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-min-width: 400px;
-background-color: #e5e5e5;
-border: 1px solid black;
-border-radius: 6px;
-}
-
-.space,
-.folder {
-min-height: 165px;
-}
-
-.list{
-min-height: 225px;
-}
-
-.task {
-min-height: 315px;
-}
-
-.create-modal .modal-header .button-section,
-.view-modal .modal-header .button-section{
-display: flex;
-align-items: center;
-justify-content: end;
-height: 30px;
-margin: 10px;
-}
-
-.create-modal .modal-header .title-section,
-.view-modal .modal-header .title-section {
-position: absolute;
-top: 10px;
-height: 30px;
-width: 100%;
-text-align: center;
-align-content: center;
-z-index: -1;
-}
-
-.create-dropdown-container,
-.create-name-container,
-.create-description-container,
-.create-due-date-container,
-.view-dropdown-container,
-.view-name-container,
-.view-description-container,
-.view-due-date-container{
-height: 30px;
-padding: 5px 10px;
-display: grid;
-grid-auto-flow: column;
-grid-template-columns: 125px 1fr;
-}
-
-.create-task-dropdown-container,
-.create-task-name-container,
-.create-task-description-container,
-.create-task-due-date-container,
-.create-task-status-container,
-.create-task-assignees-container,
-.view-task-dropdown-container,
-.view-task-name-container,
-.view-task-description-container,
-.view-task-due-date-container,
-.view-task-status-container,
-.view-task-assignees-container {
-height: 35px;
-padding: 5px 10px;
-display: grid;
-grid-auto-flow: column;
-grid-template-columns: 160px 1fr;
-}
-
-.create-task-assignees-container ul,
-.view-task-assignees-container ul {
-max-height: 25px;
-overflow-y: auto;
-background-color: white;
-border: 1px solid black;
-border-radius: 5px;
-}
-
-.create-task-assignees-container ul li,
-.view-task-assignees-container ul li {
-height: 25px;
-list-style-type: none;
-}
-
-.view-task-assignees-container ul li {
-padding-left: 10px;
-}
-
-.create-task-assignees-container ul li label,
-.view-task-assignees-container ul li label {
-padding-left: 10px;
-width: calc(100% - 4px);
-height: calc(100% - 4px);
-display: flex;
-align-items: center;
-gap: 10px;
-}
-
-.submit-btn-ctn {
-margin-top: 10px;
-height: 30px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
-.submit-btn-ctn button {
-height: inherit;
-width: 115px;
-border: 1px solid black;
-border-radius: 6px;
-}
-
-input, select {
-border: 1px solid black;
-border-radius: 5px;
-padding-left: 10px;
-} */
-
+/* ============================================================
+   CREATE / VIEW MODAL — BASE
+   ============================================================ */
 .create-modal,
 .view-modal {
     display: none;
@@ -135,35 +8,25 @@ padding-left: 10px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    min-width: 400px;
+    width: 560px;
+    max-width: 95vw;
     background-color: #ffffff;
     border: none;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+    overflow: visible;
     z-index: 11;
 }
 
-/* Modal Size Variants */
-.space,
-.folder {
-    min-height: 165px;
-}
-
-.list {
-    min-height: 225px;
-}
-
-.task {
-    min-height: 315px;
-}
-
-/* Modal Header */
+/* ============================================================
+   MODAL HEADER
+   ============================================================ */
 .create-modal .modal-header,
 .view-modal .modal-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 0;
     position: relative;
+    border-radius: 16px 16px 0 0;
 }
 
 .create-modal .modal-header .button-section,
@@ -171,8 +34,8 @@ padding-left: 10px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    height: 50px;
-    padding: 0 15px;
+    height: 54px;
+    padding: 0 16px;
 }
 
 .create-modal .modal-header .button-section button,
@@ -207,158 +70,394 @@ padding-left: 10px;
     position: absolute;
     top: 0;
     left: 0;
-    height: 50px;
+    height: 54px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 0;
     pointer-events: none;
 }
 
 .create-modal .modal-header .title-section span,
 .view-modal .modal-header .title-section span {
     color: #ffffff;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 600;
-    letter-spacing: -0.3px;
+    letter-spacing: -0.2px;
 }
 
-/* Modal Body */
+/* ============================================================
+   MODAL BODY
+   ============================================================ */
 .create-modal .modal-body,
 .view-modal .modal-body {
-    padding: 20px;
+    padding: 24px 28px 20px;
+    max-height: 82vh;
+    overflow-y: auto;
 }
 
-/* Standard Field Containers */
-.create-dropdown-container,
-.create-name-container,
-.create-description-container,
-.create-due-date-container,
-.view-dropdown-container,
-.view-name-container,
-.view-description-container,
-.view-due-date-container {
-    min-height: 30px;
-    padding: 5px 10px;
+.create-modal .modal-body::-webkit-scrollbar {
+    width: 5px;
+}
+.create-modal .modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+.create-modal .modal-body::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 8px;
+}
+
+/* ============================================================
+   FORM LAYOUT
+   ============================================================ */
+#createTaskForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Full-width field */
+.form-field.full-width {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Two-column row */
+.form-row {
     display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: 125px 1fr;
-    align-items: center;
-    gap: 12px;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
 }
 
-/* Task Field Containers */
-.create-task-dropdown-container,
-.create-task-name-container,
-.create-task-description-container,
-.create-task-due-date-container,
-.create-task-status-container,
-.create-task-assignees-container,
-.view-task-dropdown-container,
-.view-task-name-container,
-.view-task-description-container,
-.view-task-due-date-container,
-.view-task-status-container,
-.view-task-assignees-container,
-.view-folder-lists-container {
-    min-height: 35px;
-    padding: 5px 10px;
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: 160px 1fr;
-    align-items: center;
-    gap: 12px;
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-/* Labels */
-label {
+/* ============================================================
+   LABELS
+   ============================================================ */
+.form-field > label,
+.form-field > .assignees-dropdown + label {
     color: #4a5568;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
 }
 
-/* Inputs and Selects */
-input, select {
+/* ============================================================
+   INPUTS, SELECTS, TEXTAREA
+   ============================================================ */
+.form-field input,
+.form-field select,
+.form-field textarea {
     border: 2px solid #e2e8f0;
     border-radius: 8px;
-    padding: 8px 12px;
+    padding: 9px 12px;
     font-size: 14px;
     color: #2d3748;
     background: #f7fafc;
     transition: all 0.2s ease;
     width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
 }
 
-input:focus, select:focus {
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
     outline: none;
     border-color: #667eea;
     background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
 }
 
-input[readonly] {
-    background: #f7fafc;
-    cursor: default;
+.form-field textarea {
+    resize: vertical;
+    min-height: 96px;
+    line-height: 1.5;
 }
 
-/* Assignees Container */
-.create-task-assignees-container,
-.view-task-assignees-container {
-    align-items: flex-start;
+.form-field input[type="date"] {
+    cursor: pointer;
 }
 
-.create-task-assignees-container label,
-.view-task-assignees-container label {
-    padding-top: 8px;
+/* ============================================================
+   ASSIGNEES CUSTOM DROPDOWN
+   ============================================================ */
+.assignees-field {
+    position: relative;
 }
 
-.create-task-assignees-container ul,
-.view-task-assignees-container ul {
-    max-height: 40px;
-    overflow-y: auto;
-    background-color: #f7fafc;
+.assignees-dropdown {
+    position: relative;
+}
+
+.assignees-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
     border: 2px solid #e2e8f0;
     border-radius: 8px;
-    padding: 0 6px;
+    padding: 9px 12px;
+    font-size: 14px;
+    color: #2d3748;
+    background: #f7fafc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    min-height: 40px;
 }
 
-/* Custom Scrollbar */
-.create-task-assignees-container ul::-webkit-scrollbar,
-.view-task-assignees-container ul::-webkit-scrollbar {
-    width: 6px;
+.assignees-trigger:hover {
+    border-color: #667eea;
+    background: #ffffff;
 }
 
-.create-task-assignees-container ul::-webkit-scrollbar-track,
-.view-task-assignees-container ul::-webkit-scrollbar-track {
-    background: #e2e8f0;
+.assignees-trigger.open {
+    border-color: #667eea;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
+    border-radius: 8px 8px 0 0;
+    border-bottom-color: transparent;
+}
+
+.trigger-placeholder {
+    color: #a0aec0;
+    font-size: 14px;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.trigger-placeholder.has-selection {
+    color: #2d3748;
+}
+
+.trigger-icon {
+    color: #a0aec0;
+    font-size: 11px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.trigger-icon.rotated {
+    transform: rotate(180deg);
+}
+
+/* Panel */
+.assignees-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% - 2px);
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 2px solid #667eea;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+    z-index: 50;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.assignees-panel.open {
+    display: block;
+}
+
+.assignees-panel::-webkit-scrollbar { width: 5px; }
+.assignees-panel::-webkit-scrollbar-track { background: #f7fafc; }
+.assignees-panel::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 8px; }
+
+.assignees-panel ul {
+    list-style: none;
+    padding: 4px 0;
+    margin: 0;
+}
+
+.assignees-panel ul li {
+    padding: 0;
+}
+
+.assignee-option {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.assignee-option:hover {
+    background: #f0f4ff;
+}
+
+.assignee-option input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    accent-color: #667eea;
+    cursor: pointer;
+    /* override global input styles */
+    border: none;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+}
+
+.assignee-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.assignee-name {
+    flex: 1;
+    font-size: 13px;
+    color: #2d3748;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Overloaded item highlight */
+.assignee-option.is-overloaded .assignee-name {
+    color: #c05621;
+}
+
+/* Badges */
+.task-count-badge {
+    font-size: 11px;
+    background: #edf2f7;
+    color: #718096;
+    padding: 2px 7px;
+    border-radius: 99px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.task-count-badge.overloaded {
+    background: #fff5f5;
+    color: #e53e3e;
+    font-weight: 600;
+}
+
+/* Overload warning banner — sits below the assignees/due-date row */
+.overload-warning-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #fffbeb;
+    border: 1.5px solid #f6ad55;
     border-radius: 8px;
+    padding: 10px 14px;
+    animation: bannerSlideIn 0.2s ease;
 }
 
-.create-task-assignees-container ul::-webkit-scrollbar-thumb,
-.view-task-assignees-container ul::-webkit-scrollbar-thumb {
-    background: #cbd5e0;
+@keyframes bannerSlideIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.overload-warning-icon {
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.overload-warning-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.overload-warning-text strong {
+    font-size: 13px;
+    color: #92400e;
+    font-weight: 600;
+}
+
+.overload-warning-text span {
+    font-size: 12.5px;
+    color: #b45309;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   FORM ACTIONS
+   ============================================================ */
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+    padding-top: 4px;
+}
+
+.btn-cancel {
+    height: 38px;
+    padding: 0 20px;
+    background: #ffffff;
+    color: #718096;
+    border: 2px solid #e2e8f0;
     border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
 }
 
-.create-task-assignees-container ul::-webkit-scrollbar-thumb:hover,
-.view-task-assignees-container ul::-webkit-scrollbar-thumb:hover {
-    background: #a0aec0;
+.btn-cancel:hover {
+    border-color: #cbd5e0;
+    color: #4a5568;
+    background: #f7fafc;
 }
 
-/* Assignee List Items */
-.create-task-assignees-container ul li,
-.view-task-assignees-container ul li {
-    min-height: 38px;
-    list-style-type: none;
-    margin-bottom: 6px;
+.btn-submit {
+    height: 38px;
+    padding: 0 22px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+    font-family: inherit;
 }
 
-.create-task-assignees-container ul li:last-child,
-.view-task-assignees-container ul li:last-child {
-    margin-bottom: 0;
+.btn-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.45);
 }
 
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* ============================================================
+   LEGACY VIEW MODAL ASSIGNEES (kept intact)
+   ============================================================ */
 .view-task-assignees-container ul li {
     padding: 8px 12px;
     background: #ffffff;
@@ -385,65 +484,6 @@ input[readonly] {
     flex-shrink: 0;
 }
 
-.create-task-assignees-container ul li label {
-    padding: 8px 12px;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #ffffff;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.create-task-assignees-container ul li label:hover {
-    background: #edf2f7;
-}
-
-.create-task-assignees-container ul li input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    accent-color: #667eea;
-}
-
-/* Submit Button Container */
-.submit-btn-ctn {
-    margin-top: 20px;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px 10px 10px;
-}
-
-.submit-btn-ctn button {
-    height: 40px;
-    min-width: 115px;
-    padding: 0 24px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-.submit-btn-ctn button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
-}
-
-.submit-btn-ctn button:active {
-    transform: translateY(0);
-}
-
-/* Empty State */
 .view-task-assignees-container ul:empty::after {
     content: 'No assignees';
     display: block;

@@ -19,10 +19,16 @@
 
 .second-section {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 500px;
     gap: 20px;
     height: calc(100vh - 195px);
     margin: 20px;
+}
+
+.task-statuses-container,
+.assignees-task-counter-container{
+    display: grid;
+    grid-template-rows: 75px 1fr;
 }
 
 .task-statuses-container,
@@ -30,14 +36,16 @@
     background: white;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    padding: 24px;
+    padding: 0 24px 24px 24px;
     overflow-y: auto;
 }
 
 .task-statuses-title-container,
 .assignees-task-title-container {
-    margin-bottom: 24px;
-    padding-bottom: 16px;
+    margin: 12px 0;
+    padding: 8px 0;
+    /* margin-bottom: 24px;
+    padding-bottom: 16px; */
     border-bottom: 2px solid #e9ecef;
 }
 
@@ -50,7 +58,8 @@
 
 .task-statuses-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: 1fr 1fr;
+    /* grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); */
     gap: 16px;
 }
 
