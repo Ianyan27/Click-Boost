@@ -38,10 +38,10 @@ return [
     'clickup' => [
         'base_url' => env('CLICKUP_BASE_URL'),
         'token' => env('CLICKUP_API_TOKEN'),
-        'user_folder_id' => env('CLICKUP_USER_FOLDER_ID'),
+        'user_folder_id' => "901613065989",
         'fields' => [
-            'user_email' => env('CLICKUP_EMAIL_FIELD_ID'),
-            'user_role'  => env('CLICKUP_ROLE_FIELD_ID')
+            'user_email' => "a78db3a3-a400-4d2e-97b0-1c7f572e49a2",
+            'user_role'  => "7b6d7dab-bea4-4dbe-a154-ddc449611249"
         ]
     ],
 
