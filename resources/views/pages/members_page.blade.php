@@ -20,7 +20,7 @@
                 <tbody>
                     @foreach($members as $member)
                         <tr>
-                            <td colspan="7">{{ $member->username}}</td>
+                            <td colspan="7">{{ $member->username ?? "No Username"}}</td>
                             <td colspan="3">{{ $member->email }}</td>
                             <td class="action-column" colspan="2">
                                 <div class="action-buttons">
