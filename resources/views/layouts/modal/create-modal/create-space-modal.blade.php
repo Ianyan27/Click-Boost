@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="{{ asset('css/modal/create-modal.css') }}">
-
 <div class="create-modal space" id="createSpaceMdl">
     <div class="modal-header">
         <div class="button-section">
@@ -14,7 +12,7 @@
     <div class="modal-body">
         <form action="{{ route('clickup.spaces') }}" method="POST" id="createSpaceForm">
             @csrf
-            <div class="create-dropdown-container">
+            <div class="create-dropdown-container form-field full-width">
                 <label for="team">Select Workspace:</label>
                 <select name="team" id="team">
                     @foreach ($teams as $team)
@@ -22,12 +20,12 @@
                     @endforeach
                 </select>
             </div>
-            <div class="create-name-container">
+            <div class="create-name-container form-field full-width">
                 <label for="name">Space Name:</label>
                 <input type="text" placeholder="Enter Space Name...." name="name">
             </div>
             <div class="submit-btn-ctn">
-                <button type="submit" id="closeModal">
+                <button class="btn-submit" type="submit" id="closeModal">
                     Create Space
                 </button>
             </div>

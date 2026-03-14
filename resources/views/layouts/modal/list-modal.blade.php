@@ -14,7 +14,7 @@
     <div class="modal-body">
         <form action="{{ route('clickup.lists') }}" method="POST" id="createListForm">
             @csrf
-            <div class="create-dropdown-container">
+            <div class="create-dropdown-container form-field full-width">
                 <label for="folder">Select Folder:</label>
                 <select name="folder" id="folder">
                     @foreach ($folders as $folder)
@@ -22,20 +22,20 @@
                     @endforeach
                 </select>
             </div>
-            <div class="create-name-container">
+            <div class="create-name-container form-field full-width">
                 <label for="name">List Name:</label>
                 <input type="text" placeholder="Enter List Name...." name="name">
             </div>
-            <div class="create-description-container">
+            <div class="create-description-container form-field full-width">
                 <label for="content">Enter List Content:</label>
                 <input type="text" placeholder="Enter List Content...." name="content">
             </div>
-            <div class="create-due-date-container">
+            <div class="create-due-date-container form-field full-width">
                 <label for="due_date">Select Due Date:</label>
                 <input type="date" placeholder="List Due Date" name="due_date">
             </div>
             <div class="submit-btn-ctn">
-                <button type="submit" id="closeModal">
+                <button class="btn-submit" type="submit" id="closeModal">
                     Create List
                 </button>
             </div>

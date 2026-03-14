@@ -3,6 +3,7 @@
 @extends('layouts.modal.view-data-modal.view-space-modal')
 
 @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/modal/create-modal.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal/edit-modal.css') }}">
 @endpush
 

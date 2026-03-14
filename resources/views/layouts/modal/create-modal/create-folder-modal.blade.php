@@ -14,7 +14,7 @@
     <div class="modal-body">
         <form action="{{ route('clickup.folders') }}" method="POST" id="createFolderForm">
             @csrf
-            <div class="create-dropdown-container">
+            <div class="create-dropdown-container form-field full-width">
                 <label for="space">Select Space:</label>
                 <select name="space" id="space">
                     @foreach ($spaces as $space)
@@ -22,12 +22,12 @@
                     @endforeach
                 </select>
             </div>
-            <div class="create-name-container">
+            <div class="create-name-container form-field full-width">
                 <label for="name">Folder Name:</label>
                 <input type="text" placeholder="Enter Folder Name...." name="name">
             </div>
             <div class="submit-btn-ctn">
-                <button type="submit" id="closeModal">
+                <button class="btn-submit" type="submit" id="closeModal">
                     Create Folder
                 </button>
             </div>
