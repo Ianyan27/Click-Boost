@@ -13,7 +13,7 @@
     message="You're about to delete this space."
 />
 <x-view-modal entity="Space" modalId="viewMdl">
-    <div class="view-space-name-container">
+    <div class="view-space-name-container form-field full-width">
         <label>Space Name:</label>
         <input id="modalSpaceName" type="text" readonly>
     </div>

@@ -252,11 +252,15 @@ class ClickupApiController extends Controller
                             'email'    => $assignee['email']
                         ];
                     })->values(),
+                    'priority'        => $task['priority'],
                     'list_id'         => $list->id,
                     'list_name'       => $list->name
             ];
             });
         });
+
+        Log::info(collect($tasks)->pluck('priority'));
+
 
         $taskCounts = collect($tasks)->flatMap(fn($task) => $task->assignees)->groupBy('id')->map(fn($group) => $group->count());
 

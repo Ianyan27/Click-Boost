@@ -11,25 +11,25 @@
     message="You're about to delete this list."
 />
 <x-view-modal entity="List" modalId="viewMdl">
-    <div class="view-folder-name-container">
+    <div class="view-folder-name-container form-field full-width">
         <label>Folder:</label>
         <input id="modalFolder" type="text" readonly>
     </div>
-    <div class="view-folder-space-container">
+    <div class="view-folder-space-container form-field full-width">
         <label>List Name:</label>
         <input id="modalListName" type="text" readonly>
     </div>
-    <div class="view-folder-space-container">
+    <div class="view-folder-space-container form-field full-width">
         <label>Content:</label>
         <input id="modalListContent" type="text" readonly>
     </div>
-    <div class="view-folder-space-container">
+    <div class="view-folder-space-container form-field full-width">
         <label for="due_date">Due Date:</label>
         <input id="modalDueDate" type="text" readonly>
     </div>
-    <div class="view-folder-lists-container">
+    <div class="view-folder-lists-container form-field full-width">
         <label>Tasks:</label>
-        <ul id="modalTasks"></ul>
+        <ul id="modalTasks" style="width: 100%"></ul>
     </div>
 </x-view-modal>
 <div class="edit-modal" id="editModal" style="display:none;">

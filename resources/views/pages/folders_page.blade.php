@@ -11,17 +11,17 @@
     message="You're about to delete this folder."
 />
 <x-view-modal entity="Folder" modalId="viewMdl">
-    <div class="view-folder-name-container">
+    <div class="view-folder-name-container form-field full-width">
         <label>Folder Name:</label>
         <input id="modalFolderName" type="text" readonly>
     </div>
-    <div class="view-folder-space-container">
+    <div class="view-folder-space-container form-field full-width">
         <label>Space:</label>
         <input id="modalFolderSpace" type="text" readonly>
     </div>
-    <div class="view-folder-lists-container">
+    <div class="view-folder-lists-container form-field full-width">
         <label>Lists:</label>
-        <ul id="modalLists"></ul>
+        <ul id="modalLists" style="width: 100%"></ul>
     </div>
 </x-view-modal>
 <div class="edit-modal" id="editModal" style="display:none;">

@@ -12,29 +12,37 @@
     message="You're about to delete this task."
 />
 <x-view-modal entity="Task" modalId="viewTaskMdl">
-    <div class="view-task-dropdown-container">
+    <div class="view-task-dropdown-container form-field full-width">
         <label>List:</label>
         <input id="modalList" type="text" readonly>
     </div>
-    <div class="view-task-name-container">
+    <div class="view-task-name-container form-field full-width">
         <label>Task Name:</label>
         <input id="modalName" type="text" readonly>
     </div>
-    <div class="view-task-description-container">
+    <div class="view-task-description-container form-field full-width">
         <label>Description:</label>
         <input id="modalDescription" type="text" readonly>
     </div>
-    <div class="view-task-due-date-container">
-        <label>Due Date:</label>
-        <input id="modalDueDate" type="text" readonly>
+    <div class="form-row">
+        <div class="form-field">
+            <label>Status:</label>
+            <input id="modalStatus" type="text" readonly>
+        </div>
+        <div class="form-field">
+            <label>Priority:</label>
+            <input id="modalPriority" type="text">
+        </div>
     </div>
-    <div class="view-task-status-container">
-        <label>Status:</label>
-        <input id="modalStatus" type="text" readonly>
-    </div>
-    <div class="view-task-assignees-container">
-        <label>Assigned Assignees:</label>
-        <ul id="modalAssignees"></ul>
+    <div class="form-row">
+        <div class="form-field assignees-field view-folder-lists-container">
+            <label>Assigned Assignees:</label>
+            <ul id="modalAssignees"></ul>
+        </div>
+        <div class="form-field">
+            <label>Due Date:</label>
+            <input id="modalDueDate" type="text" readonly>
+        </div>
     </div>
 </x-view-modal>
 <div class="edit-modal" id="editModal" style="display:none;">
@@ -260,6 +268,10 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
         const modal = document.getElementById('viewTaskMdl');
         const closeBtn = document.getElementById('closeModal');
 
@@ -268,11 +280,14 @@
 
                 const task = JSON.parse(this.dataset.task);
 
+                const priority = capitalizeFirstLetter(task.priority['priority']);
+
                 document.getElementById('modalList').value = task.list_name;
                 document.getElementById('modalName').value = task.name;
                 document.getElementById('modalStatus').value = task.status;
                 document.getElementById('modalDescription').value = task.description;
                 document.getElementById('modalDueDate').value = task.due_date;
+                document.getElementById('modalPriority').value = priority;
             
                 const assigneesList = document.getElementById('modalAssignees');
                 assigneesList.innerHTML = '';

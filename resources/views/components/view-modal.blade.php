@@ -17,7 +17,7 @@
         {{ $slot }}
 
         <div class="submit-btn-ctn">
-            <button type="button" id="closeModal" class="close-view-modal">
+            <button class="btn-submit" type="button" id="closeModal" class="close-view-modal">
                 Close
             </button>
         </div>
